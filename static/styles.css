@@ -5,10 +5,10 @@
     margin: 0;
     font-family: "Inkut Antiqua";
 }
-body, html{
+/* body, html{
     background-color: #041416;
     overflow-x: hidden;
-}
+} */
 
 /* header */
 .logo{
@@ -32,12 +32,19 @@ body, html{
 
 /* navbar */
 .navbar{
+    width:100%;
+    color: white;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+}
+.navbar .container-fluid{
     display: flex;
     justify-content: space-evenly;
-    width:100%;
     background-color: #0b1516;
-    color: white;
     z-index: 1;
+    width: 100%;
+    text-align: center;
 }
 .navbar-toggler{
     color: white;
@@ -57,11 +64,12 @@ body, html{
 }
 .navbar a{
     text-decoration: none;
-    padding: 6px;
+    padding: 10px;
     width: 100%;
     text-align: center;
     cursor: pointer;
     color: white;
+    height: 100%;
 }
   
 .navbar h4{
@@ -72,9 +80,72 @@ body, html{
     background-color: #24CFED;
     color: black;
 }
+.auth{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40%;
+}
 .auth a{
     background-color: #24CFED;
+    padding: 5px;
+    border-right: 1px solid rgba(222,222,222,1);
 }
 .auth a:hover{
     background-color: white;
 }
+
+/* hero section */
+.hero-section {
+    position: relative;
+    height: 78vh;
+    background-image: url('Images/Parliament.jpg'); /* Replace with your actual image path */
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    mix-blend-mode: multiply;
+    
+}
+
+.hero-content {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #0b1516;
+    padding: 20px;
+    opacity: 0.9;
+}
+
+.hero-title {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    font-weight: bolder;
+}
+
+.hero-description {
+    font-size: 1rem;
+    margin-bottom: 40px;
+    font-family: 'Tiro Telugu';
+}
+
+.hero-button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 1em;
+    text-decoration: none;
+    background-color: #24CFED; /* Change the color according to your design */
+    color:black;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.hero-button:hover {
+    background-color: white; /* Change the hover color according to your design */
+    color: black;
+    text-decoration: none;
+}
+  
