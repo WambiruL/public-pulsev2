@@ -10,10 +10,33 @@
 </head>
 <body>
     <div class="container">
+        <!-- header section -->
         <section class="header-logo">
             <img src="{% static 'Images/publicpulselogo2.png' %}" class="logo"></img>
             <h2>PUBLIC <span> PULSE</span></h2>
         </section>
+
+        <!-- navbar section -->
+
+        <nav class='navbar navbar-expand-lg'>
+            <div class="container-fluid">
+                <button class="navbar-toggler ms-auto bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#n_bar" aria-controls="navbarNavAltMarkup" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="n_bar">
+                    <a href="#home" class="nav-link"><h4>Home</h4></a> 
+                    <a href="#about" class="nav-link"><h4>About</h4></a> 
+                    <a href="#features" class="nav-link"><h4>Features</h4></a>
+                    <a href="#howitworks" class="nav-link"><h4>How it works</h4></a>
+                    <a href="#testimonials" class="nav-link"><h4>Testimonials</h4></a>
+                </div>
+            </div>
+            <div class="auth">
+                <a href="" class="nav-link"><button type="button" class="btn">Register</button></a>
+                <a href="" class="nav-link"><button type="button" class="btn">Log In</button></a>
+                <a href="" class="nav-link"><button type="button" class="btn">Admin</button></a>
+            </div>
+        </nav>
     </div>
 </body>
 </html>

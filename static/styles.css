@@ -29,3 +29,52 @@ body, html{
 .header-logo span{
     color: #24CFED;
 }
+
+/* navbar */
+.navbar{
+    display: flex;
+    justify-content: space-evenly;
+    width:100%;
+    background-color: #0b1516;
+    color: white;
+    z-index: 1;
+}
+.navbar-toggler{
+    color: white;
+    border: none;
+    width: 40px;
+    height: 30px;
+}
+.navbar-toggler-icon{
+    width: 20px;
+    height: 20px;
+}
+  
+.sticky{
+    position: fixed;
+    top: 0;
+  
+}
+.navbar a{
+    text-decoration: none;
+    padding: 6px;
+    width: 100%;
+    text-align: center;
+    cursor: pointer;
+    color: white;
+}
+  
+.navbar h4{
+    font-size: 17px;
+}
+  
+.navbar a:hover{
+    background-color: #24CFED;
+    color: black;
+}
+.auth a{
+    background-color: #24CFED;
+}
+.auth a:hover{
+    background-color: white;
+}
