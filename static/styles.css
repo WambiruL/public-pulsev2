@@ -3,13 +3,14 @@
 
 *{
     margin: 0;
-    font-family: "Inkut Antiqua";
+   
 }
 h2{
     font-size: 25px !important;
 }
 body, html{
     background-color: whitesmoke !important;
+    font-family: "Inkut Antiqua" !important;
     overflow-x: hidden;
 }
 
@@ -218,8 +219,8 @@ nav{
 .back-rectangle {
     position: absolute;
     top: 10%;
-    left: 10%;
-    width: 80%;
+    left: 10%;    
+    width: 60%;
     height: 80%;
     background-color: #24CFED; /* Accent color */
     opacity: 0.5;
@@ -601,3 +602,76 @@ nav{
         flex: 0 0 100%;
     }
 }
+
+/* register page */
+.citizenlogin{
+    width: 100%;
+    margin-top: 90px;
+    padding: 30px;
+  }
+  .citizenlogin .row{
+    display: flex;
+    justify-content: center;
+  }
+  .citizenlogin form{
+    width: 600px;
+    border-radius: 0;
+    padding: 20px;
+    height: 400px;
+  }
+
+  .citizenlogin .loginpage{
+    padding: 80px;
+  }
+  .citizenlogin .form-outline{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .citizenlogin .form-outline .form-control{
+    width: 300px;
+    font-size: 12px;
+    border: 2px #24CFED solid;
+  }
+  .citizenlogin .form-outline .fa{
+    width: 30px;
+  }
+  .citizenlogin .col{
+    font-size: 10px;
+  }
+  .welcome-back{
+    color: white;
+    background-color: #24CFED;
+    padding: 80px;
+  }
+  .welcome-back h2{
+    padding: 10px;
+    margin: 20px;
+  }
+  .welcome-back p{
+    line-height: 10px;
+    color: black;
+  }
+  
+  .citizenlogin .btn{
+    
+    background-color: #0b1516;
+    margin-top: 10px;
+    font-size: 12px;
+    cursor: pointer;
+    width: 100px;
+    color: white;
+    box-shadow: 0px 0px 5px;
+  }
+  .citizenlogin .btn:hover{
+    color: black;
+    width: 120px;
+    background-color: #24CFED;
+  }
+  .citizenlogin form h4{
+    padding: 10px;
+    font-size: 20px;
+    margin: 20px;
+  }
+
+ 

@@ -23,7 +23,8 @@ from django.contrib.staticfiles.views import serve
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('landing_page.urls'))
+    path('', include('landing_page.urls')),
+    path('chatbot/', include('chatbot.urls'))
 ]
 urlpatterns += static(settings.STATIC_URL, view=cache_control(no_cache=True, must_revalidate=True)(serve))
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
