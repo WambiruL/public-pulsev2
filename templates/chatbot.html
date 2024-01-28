@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+    <div class="chat-container">
+        <div class="card">
+            <div class="card-header title">
+                <a href="/">
+                    <img src="{%static 'Images/publicpulselogo2.png'%}" class="logo"/>
+                </a>
+            </div>
+            <div class="card-header welcome">Welcome, {{user.username}} 
+                <a href="logout" class="logout-link">Logout</a>
+            </div>
+
+            <div class="card-body messages-box">
+                <ul class="list-unstyled messages-list">
+                    <li class="message received">
+                        <div class="message-text">
+                            <div class="message-sender"><b>ChatPulse</b></div>
+                            <div class="message-content">Hi {{user.username}}! I am the Public Pulse Citizen Assitant. I can help you with any complains and feedback you have concerning the government services.</div>
+                        </div>
+                    </li>
+
+                    {% for chat in chats %}
+                        {% if chat.user == request.user %}
+
+                            <li class="message sent">
+                                <div class="message-text">
+                                    <div class="message-sender"><b>You</b></div>
+                                    <div class="message-content">
+                                        <p>{{chat.message}}</p>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="message received">
+                                <div class="message-text">
+                                    <div class="message-sender">
+                                        <b>ChatPulse</b>
+                                    </div>
+                                    <div class="message-content">
+                                        <p>{{chat.response}}</p>
+                                    </div>
+                                </div>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <form class="message-form">
+            {% csrf_token %}
+            <div class="input-group">
+                <input type="text" class="form-control message-input" placeholder="Type your message...">
+                <div class="input-group-append">
+                  <button type="submit" class="btn btn-primary btn-send">Send</button>
+                </div>
+              </div>
+        </form>
+    </div>
+    <script>
+        const messagesList = document.querySelector('.messages-list');
+        const messageForm = document.querySelector('.message-form');
+        const messageInput = document.querySelector('.message-input');
+      
+        messageForm.addEventListener('submit', (event) => {
+          event.preventDefault();
+      
+          const message = messageInput.value.trim();
+          if (message.length === 0) {
+            return;
+          }
+          const messageItem = document.createElement('li');
+          messageItem.classList.add('message', 'sent');
+          messageItem.innerHTML = `
+            <div class="message-text">
+                <div class="message-sender you">
+                    <b>You</b>
+                </div>
+                <div class="message-content">
+                    ${message}
+                </div>
+            </div>`;
+            messagesList.appendChild(messageItem); //show which message the user has sent
+
+            messageInput.value = ''; //Once message is sent, it does not remain the input field
+
+            fetch('', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams({
+                'csrfmiddlewaretoken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                'message': message
+            })
+            })
+            .then(response => {
+                if(!response.ok){
+                    throw new Error('Network response was not ok');                
+                } 
+                response.json();
+ 
+            })
+            
+           
+            .then(data => {
+                const response = data.response;
+                const messageItem = document.createElement('li');
+                messageItem.classList.add('message', 'received');
+                messageItem.innerHTML = `
+                <div class="message-text">
+                    <div class="message-sender">
+                    <b>ChatPulse</b>
+                    </div>
+                    <div class="message-content">
+                        ${response}
+                    </div>
+                </div>
+                `;
+                messagesList.appendChild(messageItem);
+            });
+            
+        });
+    </script>
+
+{% endblock %}

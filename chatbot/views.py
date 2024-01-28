@@ -1,8 +1,51 @@
 from django.shortcuts import render, redirect
 from django.contrib import auth
 from django.contrib.auth.models import User
+import os
+from .models import Chat
+from django.utils import timezone
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+import openai
+from openai import OpenAI
 
 # Create your views here.
+openai_api_key= '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'
+if not openai_api_key:
+    raise ValueError("No OpenAI API key found")
+openai.api_key=openai_api_key
+
+def ask_openai(message):
+    try:
+
+        response=openai.chat.completions.create(
+            model="gpt-3.5-turbo",
+            message=[
+                {'role':"system", 'content':"You are a helpful government assistant"},
+                {'role':"user", 'content':message},
+            ]
+        )
+        print(response.choice[0].message.content)
+        answer=response.choice[0].message['content'].strip()
+        return answer
+        
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return None
+
+@login_required
+def chatbot(request):
+    chats=Chat.objects.filter(user=request.user)
+
+    if request.method=='POST':
+        message=request.POST.get('message')
+        response=ask_openai(message)
+
+        chat=Chat(user=request.user, message=message, response=response, created_at=timezone.now())
+        chat.save()
+        return JsonResponse({'message':message, 'response':response})
+    return render(request, 'chatbot.html', {'chats':chats})
+
 def register(request):
     if request.method=='POST':
         username=request.POST['username']
@@ -37,3 +80,7 @@ def login(request):
             return render(request, 'login.html',{'error_message':error_message})
     else:
         return render(request, 'login.html')
+    
+def logout(request):
+    auth.logout(request)
+    return redirect('/')

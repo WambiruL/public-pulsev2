@@ -12,14 +12,15 @@
 <body>
     <div class="citizenlogin container text-center">
         <div class="row">
-            <form class="form-control loginpage col-md-8">
+            <form class="form-control loginpage col-md-8" method="post">
+                {% csrf_token %}
                 <h4>Sign In to Public Pulse</h4>
                 <div class="form-outline mb-4">
                     <i class="fa fa-envelope" aria-hidden="true"></i>
                     <input 
-                    type="email" 
-                    placeholder="Email Address *" 
-                    name="email"
+                    type="text" 
+                    placeholder="Username *" 
+                    name="username"
                     class="form-control" 
                     required />
                 </div>

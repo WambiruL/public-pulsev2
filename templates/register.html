@@ -24,14 +24,16 @@
                 
             </div>
 
-            <form class="form-control col-md-8">
+            <form class="form-control col-md-8" method="post">
+                {% csrf_token %}
                 <h4>Create your Account</h4>
                 <div class="form-outline mb-4">
                 <i class="fa fa-user" aria-hidden="true"></i>                        
                 <input 
                     type="text" 
-                    placeholder="Name *" 
+                    placeholder="Username *" 
                     class="form-control" 
+                    name="username"
                     required />
                 </div>
                 <div class="form-outline mb-4">
@@ -40,6 +42,7 @@
                     type="email" 
                     placeholder="Email Address *" 
                     class="form-control" 
+                    name="email"
                     required />
                 </div>
 
@@ -49,6 +52,7 @@
                     type="password" 
                     placeholder="Password *" 
                     minLength='6' 
+                    name="password1"
                     class="form-control" 
                     required />
                 </div>
@@ -58,6 +62,7 @@
                     type="password" 
                     placeholder="Confirm Password*" 
                     minLength='6' 
+                    name="password2"
                     class="form-control" 
                     required />
                 </div>
