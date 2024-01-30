@@ -8,34 +8,39 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 import openai
 from openai import OpenAI
+from django.views.decorators.csrf import csrf_exempt
+
+
 
 # Create your views here.
-openai_api_key= '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'
-if not openai_api_key:
-    raise ValueError("No OpenAI API key found")
+from django.conf import settings
+
+openai_api_key='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'
 openai.api_key=openai_api_key
+#     if not openai.api_key:
+#     raise ValueError("No OpenAI API key found")
+# openai.api_key=openai_api_key
 
 def ask_openai(message):
-    try:
-
+    # try:
         response=openai.chat.completions.create(
             model="gpt-3.5-turbo",
-            message=[
+            messages=[
                 {'role':"system", 'content':"You are a helpful government assistant"},
                 {'role':"user", 'content':message},
             ]
         )
-        print(response.choice[0].message.content)
-        answer=response.choice[0].message['content'].strip()
+        print(response)
+        answer=response.choices[0].message.content.strip()
         return answer
-        
-    except Exception as e:
-        print(f"An error occurred: {e}")
-        return None
+    # except Exception as e:
+    #     print(f"An unexpected error occurred: {e}")
+    #     return None
 
-@login_required
+# @login_required
+# @csrf_exempt
 def chatbot(request):
-    chats=Chat.objects.filter(user=request.user)
+    chats=Chat.objects.filter(user=request.user.id)
 
     if request.method=='POST':
         message=request.POST.get('message')
@@ -45,6 +50,20 @@ def chatbot(request):
         chat.save()
         return JsonResponse({'message':message, 'response':response})
     return render(request, 'chatbot.html', {'chats':chats})
+
+def login(request):
+    if request.method=='POST':
+        username=request.POST['username']
+        password=request.POST['password']
+        user=auth.authenticate(request, username=username, password=password)
+        if user is not None:
+            auth.login(request,user)
+            return redirect('chatbot')
+        else:
+            error_message='Invalid username or password'
+            return render(request, 'login.html',{'error_message':error_message})
+    else:
+        return render(request, 'login.html')
 
 def register(request):
     if request.method=='POST':
@@ -67,19 +86,7 @@ def register(request):
             return render(request, 'register.html', {'error_message':error_message})
     return render(request, 'register.html')
 
-def login(request):
-    if request.method=='POST':
-        username=request.POST['username']
-        password=request.POST['password']
-        user=auth.authenticate(request, username=username, password=password)
-        if user is not None:
-            auth.login(request,user)
-            return redirect('chatbot')
-        else:
-            error_message='Invalid username or password'
-            return render(request, 'login.html',{'error_message':error_message})
-    else:
-        return render(request, 'login.html')
+
     
 def logout(request):
     auth.logout(request)
