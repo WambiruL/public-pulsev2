@@ -91,3 +91,40 @@ def register(request):
 def logout(request):
     auth.logout(request)
     return redirect('/')
+
+def view_sentiments(request):
+    messages=Chat.objects.all()
+    return render(request, 'sentiments.html', {'messages':messages})
+
+def sentiment_status(request):
+    messages=Chat.objects.all()
+    for message in messages:
+        print(message.message, message.sentiment_status())
+
+def overall_sentiment_score(request):
+    total_score=0
+    count=0
+    messages=Chat.objects.exclude(sentiment_score=None)
+
+    for message in messages:
+        total_score+=message.sentiment_score
+        count +=1
+
+    if count >0:
+        average_score=round(total_score/count,2)
+        if average_score > 0.1:
+            overall_sentiment= 'Positive'
+        elif average_score < -0.1:
+            overall_sentiment ='Negative'
+        else:
+            overall_sentiment='Neutral'
+    else:
+        overall_sentiment='No data'
+        average_score=None
+
+
+    # context={
+    #     'overall_sentiment':overall_sentiment,
+    #     'average_score':average_score if count > 0 else None,
+    # }    
+    return render(request, 'overallsentiments.html', {'overall_sentiment':overall_sentiment}, {'average_score':average_score if count > 0 else None})
