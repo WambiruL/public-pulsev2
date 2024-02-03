@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<div class="admin">
+    <div class="admin-side sidebar">
+        <div class="logo-container">
+            <img src="{% static 'Images/publicpulselogo2.png' %}" alt="Public Pulse Logo" class="logo">
+            <h2>Public Pulse</h2>
+        </div>
+        <a href="chatbot/overall_sentiment_score">Sentiment Analysis</a>
+        <a href="#">Recommendation Engine</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,24 +1,22 @@
 {% extends 'base.html' %}
+{%block content%}
+{% load static %}
 
-{% block content %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>Sentiment Analysis Results</h1>
-    <ul>
-
-        <h2>Overall Sentiment: {{overall_sentiment}}</h2>
-        {% if average_score %}
-        <p>Average score: {{average_score}}</p>
-        {%endif%}
-
-    </ul>
-    
-</body>
-</html>
+    <div class="sentiment-analysis">
+        {%include 'admin_dashboard.html' %}
+       
+        <div class="sentiment container-fluid">
+            <h1>Sentiment Analysis Results</h1>
+            <ul>
+               <!-- {% for message in messages %}
+               <li>{{ message.message }}: {{message.sentiment_status}}</li><br>
+               {% endfor %} -->
+                <h2>Overall Sentiment: {{overall_sentiment}}</h2>
+               
+                <p>Average score: {{average_score}}</p>
+               
+              
+            </ul>
+        </div>
+    </div>
 {% endblock %}

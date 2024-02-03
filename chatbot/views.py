@@ -92,9 +92,9 @@ def logout(request):
     auth.logout(request)
     return redirect('/')
 
-def view_sentiments(request):
-    messages=Chat.objects.all()
-    return render(request, 'sentiments.html', {'messages':messages})
+# def view_sentiments(request):
+#     messages=Chat.objects.all()
+#     return render(request, 'sentiments.html', {'messages':messages})
 
 def sentiment_status(request):
     messages=Chat.objects.all()
@@ -123,8 +123,8 @@ def overall_sentiment_score(request):
         average_score=None
 
 
-    # context={
-    #     'overall_sentiment':overall_sentiment,
-    #     'average_score':average_score if count > 0 else None,
-    # }    
-    return render(request, 'overallsentiments.html', {'overall_sentiment':overall_sentiment}, {'average_score':average_score if count > 0 else None})
+    context={
+        'overall_sentiment':overall_sentiment,
+        'average_score':average_score if count > 0 else None,
+    }    
+    return render(request, 'overallsentiments.html', context)

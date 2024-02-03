@@ -10,7 +10,7 @@ h2{
 }
 body, html{
     background-color: whitesmoke !important;
-    font-family: "Inkut Antiqua" !important;
+    font-family: "Inknut Antiqua" !important;
     overflow-x: hidden;
 }
 
@@ -799,3 +799,5 @@ nav{
         text-align: center;
     }
 }
+
+/* Admin dashboard */
