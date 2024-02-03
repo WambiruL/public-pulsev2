@@ -10,7 +10,7 @@ class Chat(models.Model):
     sentiment_score = models.FloatField(null=True, blank=True)
 
     def __str__(self):
-        return f'{self.user.username}:{self.message}'
+        return f'{self.user.username}:{self.message}:{self.sentiment_score}:{self.created_at}'
     
     def sentiment_status(self):
         if self.sentiment_score is not None:
@@ -21,3 +21,11 @@ class Chat(models.Model):
             else:
                 return "Neutral"
         return "Unknown"
+    
+# class Sentiment(models.Model):
+#     chat = models.ForeignKey(Chat, related_name='sentiments', on_delete=models.CASCADE, null=True)
+#     score=models.FloatField()
+#     created_at=models.DateTimeField(auto_now_add=True)
+
+#     def __str__(self):
+#         return f'{self.chat.user.username} at {self.created_at}:{self.score}'

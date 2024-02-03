@@ -3,64 +3,107 @@
     box-sizing: border-box;
 }
 
-.admin-side {
-    background-color: #24CFED;
-    color: #fff;
-    padding: 20px;
+/* Sidebar Styles */
+.admin-side.sidebar {
     width: 250px;
-    height: 100vh;
-    /* box-shadow: 2px 0 5px rgba(0,0,0,0.5); */
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background-color: #24CFED;
+    /* background-color: #0b1516; */
+    color: black;
+    overflow: auto;
 }
 
-.admin-side .logo-container {
+.logo-container {
     text-align: center;
-    margin-bottom: 20px;
+    padding: 20px;
 }
 
-.admin-side .logo {
-    width: 100px; /* Adjust based on your logo's size */
+.logo-container img {
+    max-width: 100%;
     height: auto;
 }
 
-.admin-side h2 {
-    margin-top: 10px; /* Add space between logo and app name */
+.logo-container h2 {
+    margin-top: 10px;
+    color: #fff;
+    font-size: 10px;
 }
 
-.admin-side a {
-    color: black;
-    text-decoration: none;
+.admin-side.sidebar a {
     display: block;
+    color: #ddd;
     padding: 10px;
-    margin: 5px 0;
-    border-radius: 5px;
-    transition: background 0.3s ease;
-}
-
-.admin-side a:hover {
-    background-color: #0b1516;
-    color: white;
     text-decoration: none;
+    font-size: 16px;
+    border-left: 3px solid transparent;
+    transition: 0.3s;
 }
 
+.admin-side.sidebar a:hover {
+    background-color: #34495E;
+    border-left: 3px solid #0b1516;
+    color: #fff;
+}
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .admin-side {
+/* Responsive */
+@media screen and (max-width: 768px) {
+    .admin-side.sidebar {
         width: 100%;
         height: auto;
         position: relative;
     }
-    .admin-content {
-        margin-left: 0;
+    .admin-side.sidebar a {float: left;}
+    .admin-side.sidebar a:last-child {border-bottom: none;}
+}
+
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/* On screens that are less than 768px, display the sidebar as a row */
+@media screen and (max-width: 768px) {
+    .sidebar a {float: none;}
+}
+
+
+/* sentiment analysis */
+
+.sentiment-analysis {
+    max-width: 960px;
+    margin: auto;
+    padding: 20px;
+    
+}
+
+.chart-container {
+    margin-top: 20px;
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+ul li {
+    margin-bottom: 10px;
+}
+
+@media (max-width: 768px) {
+    .sentiment-analysis {
+        padding: 10px;
+    }
+
+    .chart-container {
+        padding: 10px;
     }
 }
 
-/* sentiment analysis */
-.sentiment-analysis{
-    display: flex;
-    justify-content: space-around;
-}
-.sentiment{
-    border: 2px solid red;
-
-}
