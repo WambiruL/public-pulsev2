@@ -3,24 +3,37 @@
 <link rel="stylesheet" type="text/css" href="{% static 'admin.css' %}">
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<div class="sentiment-analysis">
-    
-    
-    <div class="container-fluid sentiment-results">
-        <h1 class="sentiment-title">Sentiment Analysis Results</h1>
-        <div class="sentiment-summary">
-            <h2 class="overall-sentiment">Overall Sentiment: {{ overall_sentiment }}</h2>
-            <p class="average-score">Average score: {{ average_score }}</p>
+<div class="dashboard">
+    <div class="admin-side">
+        <div class="logo-container">
+            <a href="/">
+                <img src="{% static 'Images/publicpulselogo.png' %}" alt="Public Pulse Logo">
+            </a>    
+        </div>
+        <nav class="sidebar-navigation">
+            <a href="">Sentiment Analysis</a>
+            <a href="#">Recommendation Engine</a>
+        </nav>
+    </div>
+    <div class="content">
+        <div class="sentiment-analysis">
+            <div class="container-fluid sentiment-results">
+                <h1>Sentiment Analysis Results</h1>
+                <div class="sentiment-summary">
+                    <h2>Overall Sentiment: {{ overall_sentiment }}</h2>
+                    <p>Average score: {{ average_score }}</p>
+                </div>
+            </div>
+            <div class="chart-container line-chart">    
+                <canvas id="sentimentChart"></canvas>
+            </div>
+            <div class="chart-container pie-chart">
+                <canvas id="sentimentPie"></canvas>
+            </div>
         </div>
     </div>
-
-    <div class="chart-container line-chart">    
-        <canvas id="sentimentChart"></canvas>
-    </div>
-    <div class="chart-container pie-chart">
-        <canvas id="sentimentPie"></canvas>
-    </div>
 </div>
+
 
 
 <script>

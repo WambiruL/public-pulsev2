@@ -4,118 +4,95 @@
 }
 
 /* Sidebar Styles */
-.admin-side.sidebar {
+.dashboard {
+    display: flex;
+    min-height: 100vh;
+}
+
+.admin-side {
     width: 250px;
+    background-color: #0b1516;
+    color: white;
+    height: 100vh;
     position: fixed;
-    left: 0;
-    top: 0;
-    height: 100%;
-    background-color: #24CFED;
-    /* background-color: #0b1516; */
-    color: black;
-    overflow: auto;
+    overflow-y: auto;
+    padding-bottom: 50px;
 }
 
 .logo-container {
-    text-align: center;
     padding: 20px;
+    text-align: center;
 }
 
 .logo-container img {
-    max-width: 100%;
+    max-width: 70%;
     height: auto;
 }
 
-.logo-container h2 {
-    margin-top: 10px;
-    color: #fff;
-    font-size: 10px;
+.sidebar-navigation {
+    margin-top: 20px;
 }
 
-.admin-side.sidebar a {
+.sidebar-navigation a {
     display: block;
-    color: #ddd;
-    padding: 10px;
+    color: #ccc;
+    padding: 10px 20px;
     text-decoration: none;
-    font-size: 16px;
-    border-left: 3px solid transparent;
-    transition: 0.3s;
+    transition: color 0.3s ease, background-color 0.3s ease;
 }
 
-.admin-side.sidebar a:hover {
+.sidebar-navigation a:hover {
     background-color: #34495E;
-    border-left: 3px solid #0b1516;
+    border-left: 3px solid #24CFED;
     color: #fff;
 }
 
-/* Responsive */
-@media screen and (max-width: 768px) {
-    .admin-side.sidebar {
+@media (max-width: 768px) {
+    .admin-side {
         width: 100%;
         height: auto;
         position: relative;
     }
-    .admin-side.sidebar a {float: left;}
-    .admin-side.sidebar a:last-child {border-bottom: none;}
-}
 
-/* Clear floats after the columns */
-.row:after {
-    content: "";
-    display: table;
-    clear: both;
-}
-
-/* On screens that are less than 768px, display the sidebar as a row */
-@media screen and (max-width: 768px) {
-    .sidebar a {float: none;}
+    .sidebar-navigation a {
+        text-align: center;
+    }
 }
 
 
-/* sentiment analysis */
-.sentiment-analysis {
-    max-width: 1000px;
-    margin: 0 auto;
+/* charts */
+
+.content {
+    margin-left: 250px;
     padding: 20px;
-    box-sizing: border-box;
-}
-
-.sentiment-results .sentiment-title {
-    color: #333;
-    margin-bottom: 20px;
-}
-
-.sentiment-summary {
-    background-color: #f8f9fa;
-    padding: 15px;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0,0,0,.1);
-}
-
-.overall-sentiment, .average-score {
-    margin: 10px 0;
 }
 
 .chart-container {
     margin: 20px 0;
-    /* padding: 15px; */
+    padding: 15px;
     background: #fff;
     box-shadow: 0 2px 4px rgba(0,0,0,.1);
-    border-radius: 5px;
+    border-radius: 8px;
 }
 
-.chart-container canvas {
-    width: 100% !important;
-    height: auto !important;
-}
-
-/* Responsive Design */
 @media (max-width: 768px) {
-    .sentiment-analysis {
-        padding: 10px;
+    .admin-side {
+        width: 100%;
+        height: auto;
+        position: relative;
     }
 
-    .sentiment-summary, .chart-container {
-        padding: 10px;
+    .content {
+        margin-left: 0;
+    }
+
+    .sidebar-navigation a {
+        float: left;
+        width: 50%;
+        text-align: center;
+    }
+    
+    .sidebar-navigation a:nth-child(odd) {
+        border-right: 1px solid #fff;
     }
 }

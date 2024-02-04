@@ -3,14 +3,17 @@
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'admin.css' %}">
 
-<div class="admin">
-    <div class="admin-side sidebar">
+    <!-- <div class="admin-side">
         <div class="logo-container">
-            <img src="{% static 'Images/publicpulselogo2.png' %}" alt="Public Pulse Logo" class="logo">
-            <h2>Public Pulse</h2>
+            <a href="/">
+                <img src="{% static 'Images/publicpulselogo.png' %}" alt="Public Pulse Logo">
+            </a>    
         </div>
-        <a href="chatbot/overall_sentiment_score">Sentiment Analysis</a>
-        <a href="#">Recommendation Engine</a>
-    </div>
-</div>
+        <nav class="sidebar-navigation">
+            <a href="chatbot/overall_sentiment_score">Sentiment Analysis</a>
+            <a href="#">Recommendation Engine</a>
+        </nav>
+    </div> -->
+
+
 {% endblock %}
