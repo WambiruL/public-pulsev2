@@ -70,6 +70,12 @@
         </table>
     </div>
     <div class="container mt-5">
+        <div class="filter-form">
+            <form method="get">
+                {{ form.as_p }}
+                <button type="submit">Filter</button>
+            </form>
+        </div>
         <table id="chatsTable" class="display">
             <thead>
                 <tr>

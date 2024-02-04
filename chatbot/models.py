@@ -9,6 +9,7 @@ class Chat(models.Model):
     response=models.TextField(default="I am sorry. I dont understand your question") 
     created_at=models.DateTimeField(auto_now_add=True)
     sentiment_score = models.FloatField(null=True, blank=True)
+    classification=models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
         return f'{self.user.username}:{self.message}:{self.sentiment_score}:{self.created_at}:{self.category}'
@@ -22,6 +23,8 @@ class Chat(models.Model):
             else:
                 return "Neutral"
         return "Unknown"
+   
+
     
 # class Sentiment(models.Model):
 #     chat = models.ForeignKey(Chat, related_name='sentiments', on_delete=models.CASCADE, null=True)

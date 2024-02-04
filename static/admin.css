@@ -107,3 +107,48 @@ th {
 .dataTables_wrapper .dataTables_length {
     float: left;
 }
+
+/* chats filter */
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 5rem auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.filter-form form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.filter-form button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.filter-form button:hover {
+    background-color: #0056b3;
+}
+
+@media screen and (max-width: 768px) {
+    .filter-form form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filter-form button {
+        width: 100%; /* Makes the button full-width on smaller screens */
+    }
+}    

@@ -30,6 +30,8 @@ nltk.download('punkt')
 import spacy
 
 
+from .forms import DashboardFilterForm
+
 openai_api_key='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'
 openai.api_key=openai_api_key
 #     if not openai.api_key:
@@ -63,8 +65,11 @@ def chatbot(request):
         response=ask_openai(message)
         category, sentiment=categorize_and_analyze_sentiment(message)
 
+
         chat=Chat(user=request.user, message=message, response=response, created_at=timezone.now(), category=category, sentiment_score=sentiment)
-        chat.save()
+        for chat in Chat.objects.all():
+            chat.classification = sentiment_status(chat.sentiment_score)
+            chat.save()
         return JsonResponse({'message':message, 'response':response})
     return render(request, 'chatbot.html', {'chats':chats})
 
@@ -289,6 +294,24 @@ def sentiment_analysis(request):
     #list of users and their chats
     chats=Chat.objects.all().order_by('-created_at') #newest chats first
 
+    #filter by user, category and time    
+    form=DashboardFilterForm(request.GET)
+    chats_category=Chat.objects.all()
+
+    if form.is_valid():
+        start_date=form.cleaned_data.get('start_date')
+        end_date=form.cleaned_data.get('end_date')
+        sentiment_category=form.cleaned_data.get('sentiment_category')
+        user=form.cleaned_data.get('user')
+
+        if start_date and end_date:
+            chats_category=chats_category.filter(created_at__range=(start_date, end_date))
+        if sentiment_category and sentiment_category !='All':
+            chats_category=chats_category.filter(classification=sentiment_category)
+        if user:
+            chats_category=chats_category.filter(user=user)    
+
+
     context = {
         'dates': json.dumps(dates),
         'scores': json.dumps(scores),
@@ -298,6 +321,8 @@ def sentiment_analysis(request):
         'top_positive':top_positive,
         'top_negative':top_negative,
         'category_sentiments':category_sentiments,
-        'chats':chats
+        'chats':chats,
+        'chats_category':chats_category,
+        'form':form
     }
     return render(request, 'overallsentiments.html', context)
