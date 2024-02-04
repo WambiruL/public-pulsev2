@@ -73,37 +73,49 @@
 
 
 /* sentiment analysis */
-
 .sentiment-analysis {
-    max-width: 960px;
-    margin: auto;
+    max-width: 1000px;
+    margin: 0 auto;
     padding: 20px;
-    
+    box-sizing: border-box;
+}
+
+.sentiment-results .sentiment-title {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.sentiment-summary {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,.1);
+}
+
+.overall-sentiment, .average-score {
+    margin: 10px 0;
 }
 
 .chart-container {
-    margin-top: 20px;
-    padding: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+    margin: 20px 0;
+    /* padding: 15px; */
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,.1);
+    border-radius: 5px;
 }
 
-ul {
-    list-style-type: none;
-    padding: 0;
+.chart-container canvas {
+    width: 100% !important;
+    height: auto !important;
 }
 
-ul li {
-    margin-bottom: 10px;
-}
-
+/* Responsive Design */
 @media (max-width: 768px) {
     .sentiment-analysis {
         padding: 10px;
     }
 
-    .chart-container {
+    .sentiment-summary, .chart-container {
         padding: 10px;
     }
 }
-

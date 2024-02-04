@@ -3,30 +3,28 @@
 <link rel="stylesheet" type="text/css" href="{% static 'admin.css' %}">
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <div class="sentiment-analysis">
-        {%include 'admin_dashboard.html' %}
-       
-        <div class="sentiment container-fluid">
-            <h1>Sentiment Analysis Results</h1>
-            <ul>
-               <!-- {% for message in messages %}
-               <li>{{ message.message }}: {{message.sentiment_status}}</li><br>
-               {% endfor %} -->
-                <h2>Overall Sentiment: {{overall_sentiment}}</h2>
-               
-                <p>Average score: {{average_score}}</p>
-            </ul>
-        </div>
-
-        <div class="chart-container">
+<div class="sentiment-analysis">
     
-        <canvas id="sentimentChart" width="500" height="200"></canvas>
+    
+    <div class="container-fluid sentiment-results">
+        <h1 class="sentiment-title">Sentiment Analysis Results</h1>
+        <div class="sentiment-summary">
+            <h2 class="overall-sentiment">Overall Sentiment: {{ overall_sentiment }}</h2>
+            <p class="average-score">Average score: {{ average_score }}</p>
         </div>
     </div>
- 
+
+    <div class="chart-container line-chart">    
+        <canvas id="sentimentChart"></canvas>
+    </div>
+    <div class="chart-container pie-chart">
+        <canvas id="sentimentPie"></canvas>
+    </div>
+</div>
+
 
 <script>
+    //chart
     document.addEventListener('DOMContentLoaded', function() {
         const datesData = '{{ dates|safe }}';
         const scoresData = '{{ scores|safe }}';
@@ -59,7 +57,38 @@
                     data: scores,
                 }]
             },
-            options: {}
+            options:{
+                responsive:true,
+            }
+        });
+    });
+
+    //pie chart
+    document.addEventListener('DOMContentLoaded', function(){
+        var ctx=document.getElementById('sentimentPie').getContext('2d');
+        var chart=new Chart(ctx, {
+            type:'pie',
+            data:{
+                labels:['Positive', 'Negative', 'Neutral'],
+                datasets:[{
+                    label:'Sentiment Distribution',
+                    data:[
+                        '{{ sentiments.positive|default_if_none:"0" }}',
+                        '{{ sentiments.negative|default_if_none:"0" }}',
+                        '{{ sentiments.neutral|default_if_none:"0" }}'
+                    ],
+
+                    backgroundColor: [
+                    'rgba(75, 192, 192, 0.6)',
+                    'rgba(255, 99, 132, 0.6)',
+                    'rgba(255, 206, 86, 0.6)'
+                ],
+                borderWidth: 1
+                }]
+            },
+            options:{
+                responsive:true,
+            }
         });
     });
 </script>

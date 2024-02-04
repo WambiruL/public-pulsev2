@@ -18,6 +18,7 @@ from django.db.models.functions import TruncDay
 from django.conf import settings
 
 from . import models
+from django.db.models import Count, Case, When, FloatField
 
 openai_api_key='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'
 openai.api_key=openai_api_key
@@ -105,56 +106,116 @@ def sentiment_status(request):
     for message in messages:
         print(message.message, message.sentiment_status())
 
-def overall_sentiment_score(request):
-    total_score=0
-    count=0
-    messages=Chat.objects.exclude(sentiment_score=None)
+# def overall_sentiment_score(request):
+#     total_score=0
+#     count=0
+#     messages=Chat.objects.exclude(sentiment_score=None)
 
+#     for message in messages:
+#         total_score+=message.sentiment_score
+#         count +=1
+
+#     if count >0:
+#         average_score=round(total_score/count,2)
+#         if average_score > 0.1:
+#             overall_sentiment= 'Positive'
+#         elif average_score < -0.1:
+#             overall_sentiment ='Negative'
+#         else:
+#             overall_sentiment='Neutral'
+#     else:
+#         overall_sentiment='No data'
+#         average_score=None
+
+
+#     context={
+#         'overall_sentiment':overall_sentiment,
+#         'average_score':average_score if count > 0 else None,
+#     }    
+#     return render(request, 'overallsentiments.html', context)
+
+# def sentiment_over_time(request):
+#     end_date=datetime.now()
+#     start_date=end_date-timedelta(days=7)
+
+#     data=(Chat.objects.filter(created_at__range=(start_date, end_date))
+#           .annotate(date=TruncDay('created_at'))
+#           .values('date')
+#           .annotate(average_score=Avg('sentiment_score'))
+#           .order_by('date'))
+    
+#     if not data:
+#        dates = [(start_date + timedelta(days=i)).strftime('%Y-%m-%d') for i in range(8)]
+#        scores = [0 for _ in range(8)]
+    
+#     else:
+#         dates = [item['date'].strftime('%Y-%m-%d') for item in data]
+#         scores = [item['average_score'] for item in data]
+
+#     context={
+#         'dates':json.dumps(dates),
+#         'scores':json.dumps(scores),
+#     }
+#     print(dates)
+#     print(scores)
+#     return render(request, 'overallsentiments.html', context)
+
+# def sentiment_distribution(request):
+#     sentiments=Chat.objects.aggregate(
+#         positive=Count(Case(When(sentiment_score__gt=0.1, then=1), output_field=FloatField())),
+#         negative=Count(Case(When(sentiment_score__lt=-0.1, then=1), output_field=FloatField())),
+#         neutral=Count(Case(When(sentiment_score__lte=0.1, sentiment_score__gte=-0.1, then=1), output_field=FloatField())),
+#     )
+#     context={
+#         'sentiments':sentiments,
+#     }
+#     return render(request, 'overallsentiments.html', context)
+
+def sentiment_analysis(request):
+    # Sentiment over time
+    end_date = datetime.now()
+    start_date = end_date - timedelta(days=7)
+    time_data = (Chat.objects.filter(created_at__range=(start_date, end_date))
+                 .annotate(date=TruncDay('created_at'))
+                 .values('date')
+                 .annotate(average_score=Avg('sentiment_score'))
+                 .order_by('date'))
+
+    dates = [item['date'].strftime('%Y-%m-%d') for item in time_data] if time_data else []
+    scores = [item['average_score'] for item in time_data] if time_data else []
+
+    # Sentiment distribution
+    sentiments = Chat.objects.aggregate(
+        positive=Count(Case(When(sentiment_score__gt=0.1, then=1), output_field=FloatField())),
+        negative=Count(Case(When(sentiment_score__lt=-0.1, then=1), output_field=FloatField())),
+        neutral=Count(Case(When(sentiment_score__lte=0.1, sentiment_score__gte=-0.1, then=1), output_field=FloatField())),
+    )
+
+    # Overall sentiment score
+    total_score = 0
+    count = 0
+    messages = Chat.objects.exclude(sentiment_score=None)
     for message in messages:
-        total_score+=message.sentiment_score
-        count +=1
+        total_score += message.sentiment_score
+        count += 1
 
-    if count >0:
-        average_score=round(total_score/count,2)
+    if count > 0:
+        average_score = round(total_score / count, 2)
         if average_score > 0.1:
-            overall_sentiment= 'Positive'
+            overall_sentiment = 'Positive'
         elif average_score < -0.1:
-            overall_sentiment ='Negative'
+            overall_sentiment = 'Negative'
         else:
-            overall_sentiment='Neutral'
+            overall_sentiment = 'Neutral'
     else:
-        overall_sentiment='No data'
-        average_score=None
+        overall_sentiment = 'No data'
+        average_score = None
 
-
-    context={
-        'overall_sentiment':overall_sentiment,
-        'average_score':average_score if count > 0 else None,
-    }    
-    return render(request, 'overallsentiments.html', context)
-
-def sentiment_over_time(request):
-    end_date=datetime.now()
-    start_date=end_date-timedelta(days=7)
-
-    data=(Chat.objects.filter(created_at__range=(start_date, end_date))
-          .annotate(date=TruncDay('created_at'))
-          .values('date')
-          .annotate(average_score=Avg('sentiment_score'))
-          .order_by('date'))
-    
-    if not data:
-       dates = [(start_date + timedelta(days=i)).strftime('%Y-%m-%d') for i in range(8)]
-       scores = [0 for _ in range(8)]
-    
-    else:
-        dates = [item['date'].strftime('%Y-%m-%d') for item in data]
-        scores = [item['average_score'] for item in data]
-
-    context={
-        'dates':json.dumps(dates),
-        'scores':json.dumps(scores),
+    context = {
+        'dates': json.dumps(dates),
+        'scores': json.dumps(scores),
+        'sentiments': sentiments,
+        'overall_sentiment': overall_sentiment,
+        'average_score': average_score,
     }
-    print(dates)
-    print(scores)
-    return JsonResponse(request, 'overallsentiments.html', context)
+    return render(request, 'overallsentiments.html', context)
