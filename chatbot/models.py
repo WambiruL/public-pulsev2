@@ -5,12 +5,13 @@ from django.contrib.auth.models import User
 class Chat(models.Model):
     user=models.ForeignKey(User, on_delete=models.CASCADE)
     message=models.TextField()
+    category=models.CharField(max_length=100, default='general')
     response=models.TextField(default="I am sorry. I dont understand your question") 
     created_at=models.DateTimeField(auto_now_add=True)
     sentiment_score = models.FloatField(null=True, blank=True)
 
     def __str__(self):
-        return f'{self.user.username}:{self.message}:{self.sentiment_score}:{self.created_at}'
+        return f'{self.user.username}:{self.message}:{self.sentiment_score}:{self.created_at}:{self.category}'
     
     def sentiment_status(self):
         if self.sentiment_score is not None:

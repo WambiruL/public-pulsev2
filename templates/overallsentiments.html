@@ -32,6 +32,40 @@
             </div>
         </div>
     </div>
+    <div class="keywords">
+        <h2>Top positive Keywords</h2>
+        <ul>
+            {% for word, freq in top_positive %}
+            <li>{{word}}:{{freq}}</li>
+            {%endfor%}
+        </ul>
+
+        <h2>Top negative Keywords</h2>
+        <ul>
+            {% for word, freq in top_negative %}
+            <li>{{word}}:{{freq}}</li>
+            {%endfor%}
+        </ul>
+    </div>
+    <div class="category_sentiments">
+        <h2>Sentiment Scores by Category</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Average Sentiment Score</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for category in category_sentiments %}
+                <tr>
+                    <td>{{ category.category }}</td>
+                    <td>{{ category.average_sentiment|floatformat:2 }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 
 

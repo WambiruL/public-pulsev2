@@ -13,12 +13,22 @@ from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Avg
 from django.utils.timezone import datetime, timedelta
 from django.db.models.functions import TruncDay
-
-# Create your views here.
 from django.conf import settings
 
 from . import models
 from django.db.models import Count, Case, When, FloatField
+
+from textblob import TextBlob
+from collections import Counter
+from nltk.corpus import stopwords
+from nltk.stem import PorterStemmer
+from nltk.tokenize import word_tokenize
+import nltk
+nltk.download('stopwords')
+nltk.download('punkt')
+
+import spacy
+
 
 openai_api_key='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'
 openai.api_key=openai_api_key
@@ -26,6 +36,7 @@ openai.api_key=openai_api_key
 #     raise ValueError("No OpenAI API key found")
 # openai.api_key=openai_api_key
 
+# Create your views here.
 def ask_openai(message):
     # try:
         response=openai.chat.completions.create(
@@ -50,8 +61,9 @@ def chatbot(request):
     if request.method=='POST':
         message=request.POST.get('message')
         response=ask_openai(message)
+        category, sentiment=categorize_and_analyze_sentiment(message)
 
-        chat=Chat(user=request.user, message=message, response=response, created_at=timezone.now())
+        chat=Chat(user=request.user, message=message, response=response, created_at=timezone.now(), category=category, sentiment_score=sentiment)
         chat.save()
         return JsonResponse({'message':message, 'response':response})
     return render(request, 'chatbot.html', {'chats':chats})
@@ -170,6 +182,62 @@ def sentiment_status(request):
 #         'sentiments':sentiments,
 #     }
 #     return render(request, 'overallsentiments.html', context)
+def analyze_keywords(messages):
+    positive_keywords=[]
+    negative_keywords=[]
+
+    stop_words=set(stopwords.words('english'))
+
+    messages=Chat.objects.all()
+
+    for message in messages:
+        analysis=TextBlob(message.message)
+        keywords=[word for word in analysis.words.lower() if word not in stop_words]
+
+        if analysis.sentiment.polarity>0:
+            positive_keywords.extend(keywords)
+        elif analysis.sentiment.polarity<0:
+            negative_keywords.extend(keywords)
+
+    positive_freq= Counter(positive_keywords)
+    negative_freq=Counter(negative_keywords)
+
+    top_positive=positive_freq.most_common(10)
+    top_negative=negative_freq.most_common(10)
+
+    return top_positive, top_negative
+
+def matching_keywords(messages):
+    #stemming
+    stemmer=PorterStemmer()
+    stop_words=set(stopwords.words('english'))
+    tokens=word_tokenize(messages.lower())
+    filtered_tokens=[stemmer.stem(word) for word in tokens if word not in stop_words and word.isalpha()]
+    
+    #lemmatization - bringing words to their dictionary form
+    nlp=spacy.load("en_core_web_sm")
+    doc=nlp(messages.lower())
+    lemmas=[token.lemma_ for token in doc if not token.is_stop and token.is_alpha]
+    
+    return filtered_tokens, lemmas
+def categorize_keywords(messages):
+    categories={
+        'Transport':['roads', 'road', 'potholes','pothole', 'accidents', 'accident'],
+        'Health':['hospital', 'hospitals', 'doctors', 'nurses'],
+        'Education':['schools', 'school', 'teacher','teachers', 'student', 'students', 'bursary', 'bursaries'],
+    }
+
+    for category, keywords in categories.items(matching_keywords):
+        if any(keyword in messages.lower() for keyword in keywords):
+            return category
+    return 'general'
+
+def categorize_and_analyze_sentiment(messages):
+    category=categorize_keywords(messages)
+    sentiment=TextBlob(messages).sentiment.polarity
+
+    return category, sentiment    
+
 
 def sentiment_analysis(request):
     # Sentiment over time
@@ -211,11 +279,21 @@ def sentiment_analysis(request):
         overall_sentiment = 'No data'
         average_score = None
 
+    #Analyze keywords
+    messages=Chat.objects.all()
+    top_positive, top_negative=analyze_keywords(messages)
+    
+    #sentiments by category
+    category_sentiments=Chat.objects.values('category').annotate(average_sentiment=Avg('sentiment_score')).order_by('category')
+
     context = {
         'dates': json.dumps(dates),
         'scores': json.dumps(scores),
         'sentiments': sentiments,
         'overall_sentiment': overall_sentiment,
         'average_score': average_score,
+        'top_positive':top_positive,
+        'top_negative':top_negative,
+        'category_sentiments':category_sentiments,
     }
     return render(request, 'overallsentiments.html', context)

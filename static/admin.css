@@ -96,3 +96,54 @@
         border-right: 1px solid #fff;
     }
 }
+
+/* keywords */
+.keywords {
+    margin: 20px 0;
+    padding: 15px;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,.1);
+    border-radius: 8px;
+}
+
+.keywords h2 {
+    margin-top: 0;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+ul li {
+    margin-bottom: 10px;
+    list-style: none;
+    background-color: antiquewhite;
+}
+
+/* category sentiments */
+.category_sentiments {
+    background-color: #fff;
+    padding: 20px;
+    margin: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+h1, h2 {
+    color: #333;
+}
+
+/* Table Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+}
