@@ -1,8 +1,11 @@
 {%block content%}
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'admin.css' %}">
-
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <div class="dashboard">
     <div class="admin-side">
         <div class="logo-container">
@@ -63,6 +66,32 @@
                     <td>{{ category.average_sentiment|floatformat:2 }}</td>
                 </tr>
             {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="container mt-5">
+        <table id="chatsTable" class="display">
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Message</th>
+                    <th>Category</th>
+                    <!-- <th>Response</th> -->
+                    <th>Created At</th>
+                    <th>Sentiment Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for chat in chats %}
+                <tr>
+                    <td>{{chat.user}}</td>
+                    <td>{{chat.message}}</td>
+                    <td>{{chat.category}}</td>
+                    <!-- <td>{{chat.response}}</td> -->
+                    <td>{{chat.created_at}}</td>
+                    <td>{{chat.sentiment_score}}</td>
+                </tr>
+                {%endfor%}
             </tbody>
         </table>
     </div>
@@ -136,6 +165,13 @@
             options:{
                 responsive:true,
             }
+        });
+    });
+
+    //chats list table
+    $(document).ready(function(){
+        $('#chatsTable').DataTable({
+            "order":[[3, "desc"]]
         });
     });
 </script>

@@ -285,6 +285,9 @@ def sentiment_analysis(request):
     
     #sentiments by category
     category_sentiments=Chat.objects.values('category').annotate(average_sentiment=Avg('sentiment_score')).order_by('category')
+    
+    #list of users and their chats
+    chats=Chat.objects.all().order_by('-created_at') #newest chats first
 
     context = {
         'dates': json.dumps(dates),
@@ -295,5 +298,6 @@ def sentiment_analysis(request):
         'top_positive':top_positive,
         'top_negative':top_negative,
         'category_sentiments':category_sentiments,
+        'chats':chats
     }
     return render(request, 'overallsentiments.html', context)
