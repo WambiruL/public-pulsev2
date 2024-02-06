@@ -32,6 +32,9 @@ import spacy
 
 from .forms import DashboardFilterForm
 
+import joblib
+
+
 openai_api_key='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'
 openai.api_key=openai_api_key
 #     if not openai.api_key:
@@ -326,3 +329,15 @@ def sentiment_analysis(request):
         'form':form
     }
     return render(request, 'overallsentiments.html', context)
+
+#load model and vectorizer
+# model=joblib.load('sentiment_model.pkl')
+# vectorizer=joblib.load('tfidf_vectorizer.pkl')
+
+# def classify_message(request):
+#     message=request.GET.get('message', '')
+#     vectorized_message=vectorizer.transform([message])
+#     prediction=model.predict(vectorized_message)
+#     sentiment="Positive" if prediction[0] else "Negative"
+
+#     return JsonResponse({'message':message, 'sentiment':sentiment})

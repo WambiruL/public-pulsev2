@@ -1,10 +1,19 @@
-/* General Styles */
-* {
+@import url('https://fonts.googleapis.com/css2?family=Inknut+Antiqua&family=Tiro+Telugu&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Public+Sans:wght@200&display=swap');
+
+*{
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+   
 }
 
-a {
+body, html{
+    background-color: #041416 !important;
+    font-family: "Inknut Antiqua" !important;
+}    
+
+/* a {
     color: #007bff;
     text-decoration: none;
 }
@@ -12,54 +21,119 @@ a {
 a:hover {
     border-left: 3px solid #007bff;
 
-}
+} */
 
 /* Dashboard Layout */
-.dashboard {
+.dashboard{
+    display: flex;
+}
+.main{
     display: flex;
     flex-wrap: wrap;
+    background-color: white;
+    border-radius: 30px;
+    margin-top: 80px;
+    justify-content: center;
+    margin-right: 30px;
+    margin-bottom: 30px;
 }
 
 .admin-side {
-    background-color: #343a40;
-    color: #ffffff;
-    min-width: 240px;
+    width: 500px;
+    background-color: #041416;
+    color: white;
+    height: 100vh;
+    padding-bottom: 50px;
+}
+
+.admin-side .logo{
+    padding: 10px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: #041416;
+    margin-top: 0px;
+}
+.admin-side .logo a{
     text-decoration: none;
-    flex: 1;
-    padding: 20px;
-}
+    color: white;
+    font-size: 10px;
 
-.logo-container img {
-    max-width: 70%;
-    margin-bottom: 20px;
 }
-
+.admin-side .logo img {
+    max-width: 30%;
+    height: auto;
+}
+.admin-side .logo h4{
+    font-size: 16px;
+    color: white;
+}
+.admin-side .logo span{
+    color: #24CFED;
+}
+.sidebar-navigation{
+    margin-top: -10px;
+}
 .sidebar-navigation a {
     display: block;
-    padding: 10px 0;
-    color: #ffffff;
-    transition: background-color 0.3s;
+    color: white;
+    font-size: 15px;
+    padding: 10px 20px;
+    text-decoration: none;
+    transition: color 0.3s ease, background-color 0.3s ease;
+}
+.sidebar-navigation a:hover {
+    background-color: #24CFED;
+    color: black;
+    border-left: 3px solid whitesmoke;
+    
+}
+@media (max-width: 768px) {
+    .admin-side {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+
+    .sidebar-navigation a {
+        text-align: center;
+    }
 }
 
-.sidebar-navigation a:hover {
-    background-color: #495057;
-}
 
 /* Content Area */
 .content {
-    flex: 4;
     padding: 20px;
 }
 
 /* Sentiment Analysis, Keywords, and Category Sentiments Sections */
-.sentiment-analysis, .keywords, .category_sentiments {
-    background: #ffffff;
+.sentiment-analysis, .category_sentiments {
+    background: whitesmoke;
     padding: 20px;
     margin-bottom: 20px;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-radius: 30px;
+    /* box-shadow: 0 2px 4px rgba(0,0,0,0.1); */
+    margin-top: 40px;
+}
+.category_sentiments{
+    margin-top: 60px;
+    margin-bottom: 40px;
 }
 
+.keywords{
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-evenly;
+    background-color: white;
+    padding-top: 20px;
+}
+.keywords h2{
+    font-size: 15px !important;
+    font-weight: bold;
+}
+.keywords ul li{
+    font-family: 'Tiro Telugu';
+}
 h1, h2 {
     color: #333;
     margin-bottom: 15px;
@@ -81,6 +155,9 @@ th, td {
 
 th {
     background-color: #f8f9fa;
+}
+td{
+    font-family: 'Tiro Telugu';
 }
 
 /* Responsive Design */
@@ -111,31 +188,38 @@ th {
 /* chats filter */
 
 .container {
-    width: 90%;
-    max-width: 1200px;
+    width: 70%;
+    max-width: 700px;
     margin: 5rem auto;
     padding: 20px;
+    font-size: 15px;
     background-color: #fff;
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    /* box-shadow: 0 4px 6px rgba(0,0,0,0.1); */
 }
 
 .filter-form form {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 20px;
+    justify-content: space-around;
+    gap: 10px;
     margin-bottom: 20px;
+    font-size: 12px !important;
+    background-color: #f8f9fa;
+    padding-top: 20px;
+    border-radius: 10px;
+
 }
 
 .filter-form button {
-    padding: 10px 20px;
+    padding: 1px 30px;
     background-color: #007bff;
     color: #fff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    margin-bottom: 20px;
 }
 
 .filter-form button:hover {

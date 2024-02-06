@@ -4,40 +4,54 @@
 <style>
 
 .admin-side {
-    width: 250px;
-    background-color: #0b1516;
+    width: 300px;
+    background-color: #041416;
     color: white;
     height: 100vh;
     position: fixed;
     overflow-y: auto;
     padding-bottom: 50px;
+    border-right: 2px solid white;
 }
 
-.logo-container {
-    padding: 20px;
-    text-align: center;
+.admin-side .logo{
+    padding: 10px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
 }
+.admin-side .logo a{
+    text-decoration: none;
+    color: white;
+    font-size: 10px;
 
-.logo-container img {
-    max-width: 50%;
+}
+.admin-side .logo img {
+    max-width: 30%;
     height: auto;
 }
-
-.sidebar-navigation {
-    margin-top: 120px;
+.admin-side .logo h4{
+    font-size: 16px;
+    color: white;
+}
+.admin-side .logo span{
+    color: #24CFED;
 }
 
 .sidebar-navigation a {
     display: block;
-    color: #ccc;
+    color: white;
+    font-size: 15px;
     padding: 10px 20px;
     text-decoration: none;
     transition: color 0.3s ease, background-color 0.3s ease;
 }
 
 .sidebar-navigation a:hover {
-    background-color: #34495E;
-    color: #fff;
+    background-color: #24CFED;
+    color: black;
+    border-left: 3px solid whitesmoke;
+    
 }
 
 @media (max-width: 768px) {
@@ -56,16 +70,18 @@
 {%endblock%}
 {% block content %}
 
-<div class="admin-side">
-    <div class="logo-container">
-        <a href="/">
+<div class="admin-side sidebar">
+    <div class="logo container">
+       
             <img src="{% static 'Images/publicpulselogo.png' %}" alt="Public Pulse Logo">
-        </a>    
+            <a href="/">
+                <h4>Public<span>Pulse</span></h4>
+            </a>
     </div>
-    <nav class="sidebar-navigation">
+    <div class="sidebar-navigation">
         <a href="chatbot/overall_sentiment_score">Sentiment Analysis</a>
         <a href="#">Recommendation Engine</a>
-    </nav>
+    </div>
 </div>
 
 {% endblock %}

@@ -1,16 +1,95 @@
 {% extends 'base.html' %}
+{%block styles%}
+<style>
+.chatbot{
+    display: flex;
+    justify-content: center;
+}
+.admin-side {
+    width: 200px;
+    background-color: #041416;
+    color: white;
+    height: 100vh;
+    overflow-y: auto;
+    padding-bottom: 50px;
+}
 
+.admin-side .logo{
+    padding: 10px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+.admin-side .logo a{
+    text-decoration: none;
+    color: white;
+    font-size: 10px;
+
+}
+.admin-side .logo img {
+    max-width: 30%;
+    height: auto;
+}
+.admin-side .logo h4{
+    font-size: 16px;
+    color: white;
+}
+.admin-side .logo span{
+    color: #24CFED;
+}
+
+.sidebar-navigation a {
+    display: block;
+    color: white;
+    font-size: 15px;
+    padding: 10px 20px;
+    text-decoration: none;
+    transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+.sidebar-navigation a:hover {
+    background-color: #24CFED;
+    color: black;
+    border-left: 3px solid whitesmoke;
+    
+}
+
+@media (max-width: 768px) {
+    .admin-side {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+
+    .sidebar-navigation a {
+        text-align: center;
+    }
+}
+
+</style>
+{%endblock%}
 {% block content %}
 {% load static %}
+
+<div class="chatbot">
+    <div class="admin-side sidebar">
+        <div class="logo container">
+                <img src="{% static 'Images/publicpulselogo.png' %}" alt="Public Pulse Logo">
+                <a href="/">
+                    <h4>Public<span>Pulse</span></h4>
+                </a>
+        </div>
+    </div>
     <div class="chat-container">
         <div class="card">
-            <div class="card-header title">
+            <!-- <div class="card-header title">
                 <a href="/">
                     <img src="{%static 'Images/publicpulselogo2.png'%}" class="logo"/>
                 </a>
-            </div>
+            </div> -->
             <div class="card-header welcome">Welcome, {{user.username}} 
-                <a href="logout" class="logout-link">Logout</a>
+                <a href="logout" class="logout-link">Logout <i class="fa fa-sign-out" aria-hidden="true"></i></a>
+                
             </div>
 
             <div class="card-body messages-box">
@@ -18,9 +97,12 @@
                     <li class="message received">
                         <div class="message-text">
                             <div class="message-sender">
-                                <b>ChatPulse</b>
+                                <img src="{% static 'Images/publicpulselogo.png'%}" class="logo-chat"/>
+                                <!-- <b>ChatPulse</b> -->
+
                             </div>
                             <div class="message-content">
+
                                 Hi {{user.username}}! I am the Public Pulse Citizen Assitant. I can help you with any complains and feedback you have concerning the government services.
                             </div>
                         </div>
@@ -43,7 +125,9 @@
                             <li class="message received">
                                 <div class="message-text">
                                     <div class="message-sender">
-                                        <b>ChatPulse</b>
+                                        <img src="{% static 'Images/publicpulselogo.png'%}" class="logo-chat"/>
+
+                                        <!-- <b>ChatPulse</b> -->
                                     </div>
                                     <div class="message-content">
                                         <p>{{chat.response}}</p>
@@ -66,6 +150,8 @@
               </div>
         </form>
     </div>
+</div>
+    
     <script>
         const messagesList = document.querySelector('.messages-list');
         const messageForm = document.querySelector('.message-form');

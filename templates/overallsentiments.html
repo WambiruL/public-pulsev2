@@ -1,3 +1,4 @@
+{% extends 'base.html' %}
 {%block content%}
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'admin.css' %}">
@@ -7,99 +8,107 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <div class="dashboard">
-    <div class="admin-side">
-        <div class="logo-container">
-            <a href="/">
+    <div class="admin-side sidebar">
+        <div class="logo container">
                 <img src="{% static 'Images/publicpulselogo.png' %}" alt="Public Pulse Logo">
-            </a>    
+                <a href="/">
+                    <h4>Public<span>Pulse</span></h4>
+                </a>
         </div>
-        <nav class="sidebar-navigation">
+        <div class="sidebar-navigation">
+            <a href="pulse_admin/admin_dashboard">Dashboard Overview</a>
             <a href="">Sentiment Analysis</a>
             <a href="#">Recommendation Engine</a>
-        </nav>
+        </div>
     </div>
-    <div class="content">
-        <div class="sentiment-analysis">
-            <div class="container-fluid sentiment-results">
-                <h1>Sentiment Analysis Results</h1>
-                <div class="sentiment-summary">
-                    <h2>Overall Sentiment: {{ overall_sentiment }}</h2>
-                    <p>Average score: {{ average_score }}</p>
+    <div class="main">
+        <div class="content">
+            <div class="sentiment-analysis">
+                <div class="container-fluid sentiment-results">
+                    <h1>Sentiment Analysis Results</h1>
+                    <div class="sentiment-summary">
+                        <h2>Overall Sentiment: {{ overall_sentiment }}</h2>
+                        <p>Average score: {{ average_score }}</p>
+                    </div>
+                </div>
+                <div class="chart-container line-chart">    
+                    <canvas id="sentimentChart"></canvas>
+                </div>
+                <div class="chart-container pie-chart">
+                    <canvas id="sentimentPie"></canvas>
                 </div>
             </div>
-            <div class="chart-container line-chart">    
-                <canvas id="sentimentChart"></canvas>
-            </div>
-            <div class="chart-container pie-chart">
-                <canvas id="sentimentPie"></canvas>
-            </div>
         </div>
-    </div>
-    <div class="keywords">
-        <h2>Top positive Keywords</h2>
-        <ul>
-            {% for word, freq in top_positive %}
-            <li>{{word}}:{{freq}}</li>
-            {%endfor%}
-        </ul>
+        <div class="category_sentiments">
+            <h2>Sentiment Scores by Category</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Average Sentiment Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for category in category_sentiments %}
+                    <tr>
+                        <td>{{ category.category }}</td>
+                        <td>{{ category.average_sentiment|floatformat:2 }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <div class="keywords">
+                <div class="positive">
+                    <h2>Top positive Keywords</h2>
+                    <ul>
+                        {% for word, freq in top_positive %}
+                        <li>{{word}}:{{freq}}</li>
+                        {%endfor%}
+                    </ul>
+                </div>
 
-        <h2>Top negative Keywords</h2>
-        <ul>
-            {% for word, freq in top_negative %}
-            <li>{{word}}:{{freq}}</li>
-            {%endfor%}
-        </ul>
-    </div>
-    <div class="category_sentiments">
-        <h2>Sentiment Scores by Category</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Category</th>
-                    <th>Average Sentiment Score</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for category in category_sentiments %}
-                <tr>
-                    <td>{{ category.category }}</td>
-                    <td>{{ category.average_sentiment|floatformat:2 }}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
-    <div class="container mt-5">
-        <div class="filter-form">
-            <form method="get">
-                {{ form.as_p }}
-                <button type="submit">Filter</button>
-            </form>
+                <div class="negative">
+                    <h2>Top negative Keywords</h2>
+                    <ul>
+                        {% for word, freq in top_negative %}
+                        <li>{{word}}:{{freq}}</li>
+                        {%endfor%}
+                    </ul>
+                </div>               
+            </div>
         </div>
-        <table id="chatsTable" class="display">
-            <thead>
-                <tr>
-                    <th>User</th>
-                    <th>Message</th>
-                    <th>Category</th>
-                    <!-- <th>Response</th> -->
-                    <th>Created At</th>
-                    <th>Sentiment Score</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for chat in chats %}
-                <tr>
-                    <td>{{chat.user}}</td>
-                    <td>{{chat.message}}</td>
-                    <td>{{chat.category}}</td>
-                    <!-- <td>{{chat.response}}</td> -->
-                    <td>{{chat.created_at}}</td>
-                    <td>{{chat.sentiment_score}}</td>
-                </tr>
-                {%endfor%}
-            </tbody>
-        </table>
+        <div class="container mt-5">
+            <div class="filter-form">
+                <form method="get">
+                    {{ form.as_p }}
+                    <button type="submit">Filter</button>
+                </form>
+            </div>
+            <table id="chatsTable" class="display">
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Message</th>
+                        <th>Category</th>
+                        <!-- <th>Response</th> -->
+                        <th>Created At</th>
+                        <th>Sentiment Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for chat in chats %}
+                    <tr>
+                        <td>{{chat.user}}</td>
+                        <td>{{chat.message}}</td>
+                        <td>{{chat.category}}</td>
+                        <!-- <td>{{chat.response}}</td> -->
+                        <td>{{chat.created_at}}</td>
+                        <td>{{chat.sentiment_score}}</td>
+                    </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
