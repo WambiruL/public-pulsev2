@@ -341,3 +341,6 @@ def sentiment_analysis(request):
 #     sentiment="Positive" if prediction[0] else "Negative"
 
 #     return JsonResponse({'message':message, 'sentiment':sentiment})
+
+def user_profile(request):
+    return render(request, 'user_profile.html')
