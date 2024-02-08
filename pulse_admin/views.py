@@ -1,7 +1,5 @@
-from django.shortcuts import render
-
-
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib import auth
 import json
 from chatbot.models import Chat
 from django.db.models import Avg
@@ -29,7 +27,7 @@ import joblib
 #     return render(request, 'sentiments.html', {'messages':messages})
 
 def admin_dashboard(request):
-    return render(request, 'admin_dashboard.html')
+    return render(request, 'admin/admin_dashboard.html')
 
 
 def sentiment_status(request):
@@ -101,6 +99,11 @@ def sentiment_status(request):
 #         'sentiments':sentiments,
 #     }
 #     return render(request, 'overallsentiments.html', context)
+
+def logout(request):
+    auth.logout(request)
+    return redirect('/')
+
 def analyze_keywords(messages):
     positive_keywords=[]
     negative_keywords=[]
@@ -239,7 +242,7 @@ def sentiment_analysis(request):
         'chats_category':chats_category,
         'form':form
     }
-    return render(request, 'overallsentiments.html', context)
+    return render(request, 'admin/overallsentiments.html', context)
 
 #load model and vectorizer
 # model=joblib.load('sentiment_model.pkl')

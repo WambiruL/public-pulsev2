@@ -1,22 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib import auth
 from django.contrib.auth.models import User
-import os
-import json
+
 from .models import Chat
 from django.utils import timezone
 from django.http import JsonResponse
-from django.contrib.auth.decorators import login_required
 import openai
-from openai import OpenAI
-from django.views.decorators.csrf import csrf_exempt
-from django.db.models import Avg
-from django.utils.timezone import datetime, timedelta
-from django.db.models.functions import TruncDay
-from django.conf import settings
-
-from . import models
-from django.db.models import Count, Case, When, FloatField
 
 from textblob import TextBlob
 from collections import Counter
@@ -29,8 +18,6 @@ nltk.download('punkt')
 
 import spacy
 
-
-from .forms import DashboardFilterForm
 
 import joblib
 
@@ -247,100 +234,6 @@ def categorize_and_analyze_sentiment(messages):
     return category, sentiment    
 
 
-def sentiment_analysis(request):
-    # Sentiment over time
-    end_date = datetime.now()
-    start_date = end_date - timedelta(days=7)
-    time_data = (Chat.objects.filter(created_at__range=(start_date, end_date))
-                 .annotate(date=TruncDay('created_at'))
-                 .values('date')
-                 .annotate(average_score=Avg('sentiment_score'))
-                 .order_by('date'))
-
-    dates = [item['date'].strftime('%Y-%m-%d') for item in time_data] if time_data else []
-    scores = [item['average_score'] for item in time_data] if time_data else []
-
-    # Sentiment distribution
-    sentiments = Chat.objects.aggregate(
-        positive=Count(Case(When(sentiment_score__gt=0.1, then=1), output_field=FloatField())),
-        negative=Count(Case(When(sentiment_score__lt=-0.1, then=1), output_field=FloatField())),
-        neutral=Count(Case(When(sentiment_score__lte=0.1, sentiment_score__gte=-0.1, then=1), output_field=FloatField())),
-    )
-
-    # Overall sentiment score
-    total_score = 0
-    count = 0
-    messages = Chat.objects.exclude(sentiment_score=None)
-    for message in messages:
-        total_score += message.sentiment_score
-        count += 1
-
-    if count > 0:
-        average_score = round(total_score / count, 2)
-        if average_score > 0.1:
-            overall_sentiment = 'Positive'
-        elif average_score < -0.1:
-            overall_sentiment = 'Negative'
-        else:
-            overall_sentiment = 'Neutral'
-    else:
-        overall_sentiment = 'No data'
-        average_score = None
-
-    #Analyze keywords
-    messages=Chat.objects.all()
-    top_positive, top_negative=analyze_keywords(messages)
-    
-    #sentiments by category
-    category_sentiments=Chat.objects.values('category').annotate(average_sentiment=Avg('sentiment_score')).order_by('category')
-    
-    #list of users and their chats
-    chats=Chat.objects.all().order_by('-created_at') #newest chats first
-
-    #filter by user, category and time    
-    form=DashboardFilterForm(request.GET)
-    chats_category=Chat.objects.all()
-
-    if form.is_valid():
-        start_date=form.cleaned_data.get('start_date')
-        end_date=form.cleaned_data.get('end_date')
-        sentiment_category=form.cleaned_data.get('sentiment_category')
-        user=form.cleaned_data.get('user')
-
-        if start_date and end_date:
-            chats_category=chats_category.filter(created_at__range=(start_date, end_date))
-        if sentiment_category and sentiment_category !='All':
-            chats_category=chats_category.filter(classification=sentiment_category)
-        if user:
-            chats_category=chats_category.filter(user=user)    
-
-
-    context = {
-        'dates': json.dumps(dates),
-        'scores': json.dumps(scores),
-        'sentiments': sentiments,
-        'overall_sentiment': overall_sentiment,
-        'average_score': average_score,
-        'top_positive':top_positive,
-        'top_negative':top_negative,
-        'category_sentiments':category_sentiments,
-        'chats':chats,
-        'chats_category':chats_category,
-        'form':form
-    }
-    return render(request, 'overallsentiments.html', context)
-
-#load model and vectorizer
-# model=joblib.load('sentiment_model.pkl')
-# vectorizer=joblib.load('tfidf_vectorizer.pkl')
-
-# def classify_message(request):
-#     message=request.GET.get('message', '')
-#     vectorized_message=vectorizer.transform([message])
-#     prediction=model.predict(vectorized_message)
-#     sentiment="Positive" if prediction[0] else "Negative"
-
-#     return JsonResponse({'message':message, 'sentiment':sentiment})
 
 def user_profile(request):
-    return render(request, 'user_profile.html')
+    return render(request, 'user/user_profile.html')
