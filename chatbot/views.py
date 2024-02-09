@@ -19,6 +19,9 @@ nltk.download('stopwords')
 nltk.download('punkt')
 
 import spacy
+from .forms import CustomPasswordChangeForm
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
 
 
 import joblib
@@ -251,3 +254,16 @@ def user_profile(request):
 def chat_history(request):
     messages=Chat.objects.filter(user=request.user).order_by('created_at')
     return render(request, 'user/history.html', {'messages':messages})
+
+def change_password(request):
+    if request.method == 'POST':
+        form = CustomPasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, 'Your password was successfully updated!')
+        else:
+            messages.error(request, 'An error occurred.')
+    else:
+        form = CustomPasswordChangeForm(request.user)
+    return render(request, 'user/change_password.html', {'form': form})

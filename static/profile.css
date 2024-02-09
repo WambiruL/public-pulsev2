@@ -127,6 +127,9 @@ img{
 
 /* profile form */
 
+.form-container{
+    color: white;
+}
 .profile-form  {
     padding: 20px;
     width: 100%;
@@ -260,7 +263,14 @@ img{
     background-color: #24CFED;
     color: black;
 }
+.user-history .sidebar a{
+    text-decoration: none !important;
+   
+}
 
+.user-history .sidebar a:hover{
+    color: black;
+}
 /* Modal styling */
 .modal-content {
     border-radius: 5px;
@@ -292,4 +302,27 @@ img{
 
 .modal-body p strong:last-child {
     color: #24CFED; /* Green for "ChatPulse" */
+}
+
+/* change password page */
+.change-password{
+    display: flex;
+    justify-content: center;
+}
+.password{
+    flex-grow: 1;
+    margin: 40px;
+}
+.password h2{
+    font-size: 13px;
+}
+.password input {
+    padding: 8px;
+    margin-bottom: 12px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    width: 100%;
+}
+.password ul{
+    font-size: 12px;
 }
