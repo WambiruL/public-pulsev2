@@ -13,6 +13,8 @@ from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
 from nltk.tokenize import word_tokenize
 import nltk
+from .forms import UserProfileForm
+from django.contrib import messages
 nltk.download('stopwords')
 nltk.download('punkt')
 
@@ -236,4 +238,12 @@ def categorize_and_analyze_sentiment(messages):
 
 
 def user_profile(request):
-    return render(request, 'user/user_profile.html')
+    form=UserProfileForm()
+    if request.method=='POST':
+        form=UserProfileForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Your information has been saved")
+        else:
+            form=UserProfileForm()
+    return render(request, 'user/user_profile.html', {'form': form})

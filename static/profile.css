@@ -104,6 +104,13 @@ body, html{
         order: 1;
     }
 }
+.profile-content h1, p{
+    color: white;
+}
+.profile-content p{
+    font-family: 'Tiro Telugu';
+    font-size: 15px;
+}
 .profile-picture{
     text-align: center;
     margin-top: 20px;
@@ -115,4 +122,85 @@ body, html{
 }
 .profile-picture h4{
     font-size: 25px;
+}
+
+/* profile form */
+
+.profile-form  {
+    padding: 20px;
+    width: 100%;
+    max-width: 600px;
+}
+
+
+.profile-form  label {
+    display: block;
+    margin-bottom: 5px;
+    color: #24CFED;
+    font-size: 13px;
+    font-family: "Inknut Antiqua" !important;
+}
+
+.profile-form  input[type="text"],
+.profile-form  input[type="email"]{
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-family: 'Tiro Telugu';
+    box-sizing: border-box; /* Makes sure padding does not affect overall width */
+}
+
+
+.profile-form button {
+    background-color: #24CFED;
+    color: black;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 15px;
+}
+
+.profile-form  button:hover {
+    background-color: rgba(180, 226, 240, 0.658);
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .profile-form {
+        margin: 20px;
+    }
+}
+
+/* status message styles */
+.messages {
+    width: 100%;
+    margin: 20px 0;
+}
+
+.messages div {
+    padding: 10px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    color: #fff;
+}
+
+.success {
+    background-color: #4CAF50; /* Green */
+    width: 50%;
+    
+}
+
+.error {
+    background-color: #f44336; /* Red */
+}
+
+.warning {
+    background-color: #ff9800; /* Orange */
+}
+
+.info {
+    background-color: #2196F3; /* Blue */
 }

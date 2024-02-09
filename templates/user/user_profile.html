@@ -26,8 +26,20 @@
             <a href="#">Change Password</a>   
         </div>
         <main class="profile-content">
-            <h1>Welcome, [User Name]!</h1>
-            <p>This is your profile page. You can customize your information here.</p>
+            <h1>Welcome, {{user.username}}!</h1>
+            <p>This is your profile page. Fill in this form to help us know you more.</p>
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="{{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+            <div class="form-container">
+                <form method="POST" class="profile-form">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit">Save</button>
+                </form>
+            </div>
             <!-- Add more content here -->
         </main>
     </div>
