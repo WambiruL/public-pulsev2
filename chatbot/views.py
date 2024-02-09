@@ -247,3 +247,7 @@ def user_profile(request):
         else:
             form=UserProfileForm()
     return render(request, 'user/user_profile.html', {'form': form})
+
+def chat_history(request):
+    messages=Chat.objects.filter(user=request.user).order_by('created_at')
+    return render(request, 'user/history.html', {'messages':messages})

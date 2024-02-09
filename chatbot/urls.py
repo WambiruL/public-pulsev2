@@ -8,4 +8,5 @@ urlpatterns=[
     path('logout', views.logout, name='logout'),
     # path('sentiments', views.view_sentiments, name='view_sentiments' ),
     path('user_profile', views.user_profile, name='user_profile'),
+    path('chat_history', views.chat_history, name='chat_history'),
 ]
