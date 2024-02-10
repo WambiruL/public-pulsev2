@@ -221,11 +221,18 @@ img{
 .history {
     padding-top: 20px;
     flex-grow: 1;
+    margin-left: 50px;
 }
 .history h2{
     color: white;
     font-size: 15px;
     margin-bottom: 30px;
+
+
+}
+.history .date{
+    color: #24CFED !important;
+    font-size: 13px !important;
 }
 /* Card styling */
 .history .card {
@@ -246,8 +253,8 @@ img{
 }
 
 .history .card-text {
-    font-size: 14px;
-    color: #555;
+    font-size: 15px;
+    color: #333;
     font-family: 'Tiro Telugu';
 }
 

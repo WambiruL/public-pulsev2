@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from .models import Chat, UserProfile
 from django.contrib.auth.forms import PasswordChangeForm
 
-class DashboardFilterForm(forms.ModelForm):
+class DashboardFilterForm(forms.Form):
     start_date=forms.DateField(required=False, widget=forms.DateInput(attrs={'type':'date'}))
     end_date=forms.DateField(required=False, widget=forms.DateInput(attrs={'type':'date'}))
     sentiment_category=forms.ChoiceField(required=False, choices=[('', 'All'), ('Positive', 'Positive'), ('Negative', 'Negative'), ('Neutral', 'Neutral')])

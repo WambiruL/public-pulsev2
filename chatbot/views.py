@@ -23,6 +23,8 @@ from .forms import CustomPasswordChangeForm
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 
+from itertools import groupby
+from django.utils.timezone import localtime
 
 import joblib
 
@@ -253,7 +255,15 @@ def user_profile(request):
 
 def chat_history(request):
     messages=Chat.objects.filter(user=request.user).order_by('created_at')
-    return render(request, 'user/history.html', {'messages':messages})
+    grouped_messages = {}
+    for message in messages:
+        message_date = message.created_at.date()
+        if message_date not in grouped_messages:
+            grouped_messages[message_date] = [message]
+        else:
+            grouped_messages[message_date].append(message)
+            
+    return render(request, 'user/history.html', {'grouped_messages':grouped_messages})
 
 def change_password(request):
     if request.method == 'POST':

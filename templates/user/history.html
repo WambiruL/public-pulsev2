@@ -36,45 +36,46 @@
    
     <div class=" history container">
         <h2>Chat History</h2>
-       
-            <!-- Card for chat summary -->
+        {% for date, messages in grouped_messages.items %}
+            <h2 class="date">{{ date }}</h2>
             <div class="row">
                 {% for message in messages %}
-                    <!-- Each card takes up 4 columns in medium to large devices, full width on small devices -->
-                <div class="col-md-4 mb-3">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Chat on {{ message.created_at|date:"M d, Y" }}</h5>
-                            <p class="card-text">{{ message.message|truncatewords:10 }}</p>
-                            <button type="button" class="btn" data-toggle="modal" data-target="#chatModal{{ forloop.counter }}">Read More</button>
-                        </div>
-                    </div>
-                </div>
-           
-            
-            <!-- Modal for full chat -->
-                <div class="modal fade" id="chatModal{{ forloop.counter }}" tabindex="-1" aria-labelledby="chatModalLabel{{ forloop.counter }}" aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="chatModalLabel{{ forloop.counter }}">Full Chat on {{ message.created_at|date:"M d, Y" }}</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <p><strong>You:</strong> {{ message.message }}</p>
-                                <p><strong>ChatPulse:</strong> {{ message.response }}</p>
-                                <!-- Include more details as needed -->
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn" data-dismiss="modal">Close</button>
+                    <!-- Card for chat summary -->
+                    <div class="col-md-4 mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <p class="card-text">{{ message.message|truncatewords:10 }}...</p>
+                                <button type="button" class="btn" data-toggle="modal" data-target="#chatModal{{ forloop.parentloop.counter }}{{ forloop.counter }}">View Full Chat</button>
                             </div>
                         </div>
                     </div>
-                </div>
+                    
+                    <!-- Modal for full chat -->
+                    <div class="modal fade" id="chatModal{{ forloop.parentloop.counter }}{{ forloop.counter }}" tabindex="-1" aria-labelledby="chatModalLabel{{ forloop.parentloop.counter }}{{ forloop.counter }}" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="chatModal{{ forloop.parentloop.counter }}{{ forloop.counter }}">Full Chat on {{ message.created_at|date:"M d, Y" }}</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p><strong>You:</strong> {{ message.message }}</p>
+                                    <p><strong>ChatPulse:</strong> {{ message.response }}</p>
+                                    <!-- Include more details as needed -->
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 {% endfor %}
             </div>
+        {% endfor %}
+    </div>
+    
        
     </div>
     
