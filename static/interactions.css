@@ -1,3 +1,4 @@
+/* interactions */
 @import url('https://fonts.googleapis.com/css2?family=Inknut+Antiqua&family=Tiro+Telugu&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Public+Sans:wght@200&display=swap');
 
@@ -11,22 +12,11 @@
 body, html{
     background-color: #041416 !important;
     font-family: "Inknut Antiqua" !important;
-}    
+}   
 
-/* a {
-    color: #007bff;
-    text-decoration: none;
-}
-
-a:hover {
-    border-left: 3px solid #007bff;
-
-} */
-
-/* Dashboard Layout */
 .dashboard{
     display: flex;
-    flex-wrap: wrap;
+    justify-content: center;
 
 }
 .main{
@@ -42,7 +32,7 @@ a:hover {
 
 
 .admin-side {
-    width: 500px;
+    width: 300px;
     background-color: #041416;
     color: white;
     height: 100vh;
@@ -64,8 +54,9 @@ a:hover {
 
 }
 .admin-side .logo img {
-    max-width: 30%;
+    max-width: 20%;
     height: auto;
+    margin-bottom: 10px;
 }
 .admin-side .logo h4{
     font-size: 16px;
@@ -74,9 +65,7 @@ a:hover {
 .admin-side .logo span{
     color: #24CFED;
 }
-.sidebar-navigation{
-    margin-top: -10px;
-}
+
 .sidebar-navigation a {
     display: block;
     color: white;
@@ -84,6 +73,9 @@ a:hover {
     padding: 10px 20px;
     text-decoration: none;
     transition: color 0.3s ease, background-color 0.3s ease;
+}
+.sidebar-navigation{
+    margin-top: 20px;
 }
 .sidebar-navigation a:hover {
     background-color: #24CFED;
@@ -179,64 +171,96 @@ td{
     }
 }
 
-/* Enhancements for DataTables */
-.dataTables_wrapper .dataTables_filter {
-    float: right;
-}
-
-.dataTables_wrapper .dataTables_length {
-    float: left;
-}
-
-/* chats filter */
-
-.container {
-    width: 70%;
-    max-width: 700px;
-    margin: 5rem auto;
-    padding: 20px;
-    font-size: 15px;
-    background-color: #fff;
-    border-radius: 8px;
-    /* box-shadow: 0 4px 6px rgba(0,0,0,0.1); */
-}
-
-.filter-form form {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    gap: 10px;
-    margin-bottom: 20px;
-    font-size: 12px !important;
-    background-color: #f8f9fa;
-    padding-top: 20px;
+/* interaction management */
+/* .status{
     border-radius: 10px;
-
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+} */
+.status{
+    margin: 20px;
+}
+.status .card{
+    background-color: whitesmoke;
+    margin-top: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.status .card .text-muted{
+    font-size: 12px;
+}
+.status .card-text {
+    font-family: 'Tiro Telugu';
+    margin-bottom: 10px;
+    color: black;
+    font-size: 15px;
+}
+.status .card-text span{
+    color: black;
+    font-weight: bolder;
+}
+.form-inline {
+    width: 100%;
+    justify-content: space-between;
+    font-size: 12px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
 }
 
-.filter-form button {
-    padding: 1px 30px;
-    background-color: #007bff;
-    color: #fff;
+.status .form-inline .form-control {
+    width: 65%;
+}
+
+.status form .update {
+    width: 30%;
+    background-color: #24CFED;
+    color: black;
+    font-size: 12px;
+}
+
+.status .update:hover{
+    background-color: #041416;
+    color: white;
     border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-bottom: 20px;
+}
+form .btn-danger{
+    font-size: 12px;
+}
+.delete{
+    text-align: center;
+    margin-top: 40px;
 }
 
-.filter-form button:hover {
-    background-color: #0056b3;
+/* filter function */
+.filter-form{
+    font-size: 13px;
+    background-color: whitesmoke;
+    padding: 20px;
+    border-radius: 10px;
+    justify-content: center;
+}
+.filter-form .form-control {
+    max-width: 100%;
+     
 }
 
-@media screen and (max-width: 768px) {
-    .filter-form form {
-        flex-direction: column;
-        align-items: stretch;
-    }
+.filter-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 12px;
+}
+.filter-form .btn{
+    font-size: 12px;
 
-    .filter-form button {
-        width: 100%; /* Makes the button full-width on smaller screens */
-    }
-}    
+}
 
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .filter-form .row > div {
+        width: 100%;
+    }
+    .filter-form .row .btn {
+        width: 100%;
+    }
+}

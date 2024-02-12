@@ -3,11 +3,18 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 class Chat(models.Model):
+    STATUS_CHOICES=(
+        ('new', 'New'),
+        ('resolved', 'Resolved'),
+        ('pending', 'Pending'),
+    )
     user=models.ForeignKey(User, on_delete=models.CASCADE)
     message=models.TextField()
     category=models.CharField(max_length=100, default='general')
     response=models.TextField(default="I am sorry. I dont understand your question") 
     created_at=models.DateTimeField(auto_now_add=True)
+    status=models.CharField(max_length=10, choices=STATUS_CHOICES, null=True, blank=True )
+    resolved_at = models.DateTimeField(null=True, blank=True)
     sentiment_score = models.FloatField(null=True, blank=True)
     classification=models.CharField(max_length=100, blank=True, null=True)
 

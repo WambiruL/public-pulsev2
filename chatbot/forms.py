@@ -15,7 +15,10 @@ class UserProfileForm(forms.ModelForm):
         model=UserProfile
         fields=['first_name', 'last_name', 'email', 'sub_county', 'ward']
 
-
+class UpdateChatStatusForm(forms.ModelForm):
+    class Meta:
+        model=Chat
+        fields=['status']
 
 
 class CustomPasswordChangeForm(PasswordChangeForm):
@@ -27,3 +30,9 @@ class CustomPasswordChangeForm(PasswordChangeForm):
         self.fields['new_password2'].validators = []
 
     # Optionally, you can add your own custom validators if needed
+        
+
+class ChatFilterForm(forms.Form):
+    user=forms.ModelChoiceField(queryset=User.objects.all(), required=False)
+    category=forms.CharField(max_length=10, required=False)
+    status=forms.ChoiceField(choices=Chat.STATUS_CHOICES, required=False)

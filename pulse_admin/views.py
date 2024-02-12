@@ -2,8 +2,10 @@ from django.shortcuts import render, redirect
 from django.contrib import auth
 import json
 from chatbot.models import Chat
+from chatbot.forms import UpdateChatStatusForm
 from django.db.models import Avg
 from django.utils.timezone import datetime, timedelta
+from django.utils import timezone
 from django.db.models.functions import TruncDay
 from django.db.models import Count, Case, When, FloatField
 
@@ -16,10 +18,14 @@ import nltk
 nltk.download('stopwords')
 nltk.download('punkt')
 
+from django.db.models import Avg, F, ExpressionWrapper, fields
 import spacy
 from chatbot.forms import DashboardFilterForm
-
+from django.shortcuts import get_object_or_404, redirect, render
+from django.contrib import messages
 import joblib
+
+from chatbot.forms import ChatFilterForm
 
 # Create your views here.
 # def view_sentiments(request):
@@ -27,8 +33,87 @@ import joblib
 #     return render(request, 'sentiments.html', {'messages':messages})
 
 def admin_dashboard(request):
-    return render(request, 'admin/admin_dashboard.html')
+    total_complaints=Chat.objects.count()
+    new_complaints=Chat.objects.filter(status='new').count()
+    resolved_complaints=Chat.objects.filter(status='resolved').count()
+    pending_complaints=Chat.objects.filter(status='pending').count()
 
+    resolved_complaints_times = Chat.objects.filter(status='resolved').exclude(resolved_at=None)
+    response_times = resolved_complaints_times.annotate(
+        response_time=ExpressionWrapper(
+            F('resolved_at') - F('created_at'),
+            output_field=fields.DurationField()
+        )
+    )
+    avg_response_time = response_times.aggregate(avg_time=Avg('response_time'))['avg_time']
+
+    # Convert avg_response_time to a total number of seconds, if it's not None
+    avg_response_time_seconds = avg_response_time.total_seconds() if avg_response_time else 0
+
+    # avg_rating = Feedback.objects.aggregate(models.Avg('rating'))['rating__avg'] or 0
+    
+    context = {
+        'total_complaints': total_complaints,
+        'new_complaints': new_complaints,
+        'resolved_complaints': resolved_complaints,
+        'pending_complaints': pending_complaints,
+        'avg_response_time_seconds': avg_response_time_seconds
+        # 'avg_rating': avg_rating,
+    }
+
+
+    return render(request, 'admin/admin_dashboard.html', context)
+
+def interaction_management(request):
+    #filter status, user, category
+    filter_form=ChatFilterForm(request.GET or None)
+    chats=Chat.objects.select_related('user').all()
+       
+
+    if filter_form.is_valid():
+        if filter_form.cleaned_data.get('user'):
+            chats=chats.filter(user=filter_form.cleaned_data['user'])
+        if filter_form.cleaned_data.get('category'):
+            chats=chats.filter(category=filter_form.cleaned_data['category'])
+        if filter_form.cleaned_data.get('status'):
+            chats=chats.filter(status=filter_form.cleaned_data['status'])
+
+    # form=UpdateChatStatusForm()
+    if request.method == 'POST':
+        # form = UpdateChatStatusForm(request.POST)
+        chat_id = request.POST.get('chat_id')
+        chat = Chat.objects.get(pk=chat_id)
+        if 'update_status' in request.POST:
+            form = UpdateChatStatusForm(request.POST, instance=chat)
+            if form.is_valid():
+                updated_chat = form.save(commit=False)
+                if updated_chat.status == 'resolved' and not updated_chat.resolved_at:
+                    updated_chat.resolved_at = timezone.now()
+                updated_chat.save()
+                messages.success(request, "Status updated successfully.")
+            else:
+                messages.error(request, 'Error Updating status')
+                return redirect('interaction_management')
+        
+        elif 'delete_chat' in request.POST:
+            chat_id = request.POST.get('chat_id_delete')
+            chat = get_object_or_404(Chat, pk=chat_id)
+            chat.delete()
+            messages.success(request, "Chat deleted successfully.")
+            return redirect('interaction_management')  # Redirect to avoid re-posting form data
+        
+    # chats=Chat.objects.all()
+    chat_forms = [UpdateChatStatusForm(instance=chat) for chat in chats]
+
+    # Use zip to combine chats and forms
+    chats_and_forms = zip(chats, chat_forms)
+
+    context = {
+        'chats_and_forms': chats_and_forms,
+        'filter_form':filter_form
+    }
+    return render(request, 'admin/interactions.html', context)
+ 
 
 def sentiment_status(request):
     messages=Chat.objects.all()

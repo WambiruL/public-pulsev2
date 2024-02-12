@@ -1,7 +1,5 @@
 {% extends 'base.html' %}
-{%load static%}
-{%block styles%}
-<style>
+<!-- <style>
 
 .admin-side {
     width: 300px;
@@ -66,23 +64,43 @@
     }
 }
 
-</style>
-{%endblock%}
-{% block content %}
+</style> -->
 
-<div class="admin-side sidebar">
-    <div class="logo container">
-       
-            <img src="{% static 'Images/publicpulselogo.png' %}" alt="Public Pulse Logo">
-            <a href="/">
-                <h4>Public<span>Pulse</span></h4>
-            </a>
+{% block content %}
+{%load static%}
+<link rel="stylesheet" type="text/css" href="{% static 'admin.css' %}">
+
+<div class="dashboard">
+    <div class="admin-side sidebar">
+        <div class="logo container">
+                <img src="{% static 'Images/publicpulselogo.png' %}" alt="Public Pulse Logo">
+                <a href="/">
+                    <h4>Public<span>Pulse</span></h4>
+                </a>
+        </div>
+        <div class="sidebar-navigation">
+            <a href="">Dashboard Overview</a>
+            <a href="interaction_management">Interaction Management</a>
+            <a href="overall_sentiment_score">Sentiment Analysis</a>
+            <a href="#">Recommendation Engine</a>
+        </div>
     </div>
-    <div class="sidebar-navigation">
-        <a href="">Dashboard Overview</a>
-        <a href="overall_sentiment_score">Sentiment Analysis</a>
-        <a href="#">Recommendation Engine</a>
-    </div>
+    <div class="main">
+        <div class="content">
+            <div class="complaints">
+                <div class="dashboard_overview">
+                    <h2>Dashboard</h2>
+                    <div>Total Complaints: {{ total_complaints }}</div>
+                    <div>New Complaints: {{ new_complaints }}</div>
+                    <div>Resolved Complaints: {{ resolved_complaints }}</div>
+                    <div>Pending Complaints: {{ pending_complaints }}</div>
+                    <div>Average Response Time: {{ avg_response_time|floatformat:2 }} seconds</div>
+                    <div>Average Satisfaction Rating: {{ avg_rating|floatformat:2 }}</div>
+                </div>
+            </div>
+        </div>
+    </div>        
 </div>
+
 
 {% endblock %}
