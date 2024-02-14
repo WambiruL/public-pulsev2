@@ -334,3 +334,64 @@ img{
 .password ul{
     font-size: 12px;
 }
+
+/* status tracking */
+.user-status{
+    display: flex;
+    justify-content: center;
+}
+
+/* Container styling for some padding */
+/* .tracking {
+    padding-top: 20px;
+    flex-grow: 1;
+    margin-left: 50px;
+} */
+.tracking {
+    max-width: 300px; /* Adjust the width as needed */
+    margin: auto;
+    padding: 20px;
+    /* Light background for the container */
+    border-radius: 8px;
+    flex-grow: 1;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+.tracking h2{
+    color: white;
+    margin-top: -230px;
+    margin-bottom: 20px;
+    font-size: 15px;
+}
+.tracking .complaints-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.tracking .complaint-item {
+    background-color: #ffffff; /* White background for each item */
+    border: 1px solid #ddd; /* Light border for the items */
+    border-radius: 4px;
+    padding: 15px;
+    margin-bottom: 10px; /* Space between items */
+}
+
+.tracking .complaint-message strong {
+    color: #333; /* Darker text for message */
+    font-size:15px;
+
+}
+
+.tracking .complaint-details {
+    color: #555; /* Lighter text for details */
+    margin-top: 10px;
+    font-size: 12px;
+}
+
+.tracking .complaint-status {
+    font-weight: bold;
+    color: #007bff; /* Highlight the status */
+}
+
+.tracking .complaint-date {
+    font-style: italic;
+}

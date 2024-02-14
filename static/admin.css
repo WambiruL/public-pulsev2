@@ -26,12 +26,13 @@ a:hover {
 /* Dashboard Layout */
 .dashboard{
     display: flex;
-    flex-wrap: wrap;
+    justify-content: center;
 
 }
 .main{
     display: flex;
     flex-wrap: wrap;
+    flex-grow: 1;
     background-color: white;
     border-radius: 30px;
     margin-top: 80px;
@@ -64,7 +65,7 @@ a:hover {
 
 }
 .admin-side .logo img {
-    max-width: 30%;
+    max-width: 20%;
     height: auto;
 }
 .admin-side .logo h4{

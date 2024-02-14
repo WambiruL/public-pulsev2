@@ -349,6 +349,9 @@ def user_detail(request, user_id):
     
     return render(request, 'admin/user_detail.html', {'profile':profile, 'chats':chats})
 
+def logout(request):
+    auth.logout(request)
+    return redirect('/')
 
 #load model and vectorizer
 # model=joblib.load('sentiment_model.pkl')

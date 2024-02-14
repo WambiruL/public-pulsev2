@@ -243,8 +243,9 @@ def categorize_and_analyze_sentiment(messages):
 
 
 def user_profile(request):
+    form=UserProfileForm()
     try:
-        profile=request.user.userprofile
+        profile=request.user.username
     except UserProfile.DoesNotExist:
         profile=UserProfile.objects.create(user=request.user)
     if request.method=='POST':
@@ -280,3 +281,7 @@ def change_password(request):
     else:
         form = CustomPasswordChangeForm(request.user)
     return render(request, 'user/change_password.html', {'form': form})
+
+def status_tracking(request):
+    complaints=Chat.objects.filter(user=request.user).order_by('-created_at')
+    return render(request, 'user/status_tracking.html', {'complaints':complaints})
