@@ -240,3 +240,35 @@ td{
     }
 }    
 
+/* user management */
+.profiles .card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+    border-radius: 0.25rem; /* Slight rounding of corners */
+}
+
+.profiles .card-title {
+    font-size: 1.25rem; /* Adjust title size */
+    color: #333; /* Darker color for title */
+}
+
+.profiles .card-text {
+    color: #555; /* Slightly lighter text */
+}
+
+.profiles .btn-primary {
+    background-color: #007bff; /* Adjust button color if needed */
+    border-color: #007bff;
+}
+.details .user-info p {
+    font-size: 1.1rem; /* Larger font for readability */
+    margin-bottom: 0.5rem; /* Spacing between lines */
+}
+
+.details .delete-user-form {
+    margin-top: 2rem; /* Space above the delete button */
+}
+
+.btn-danger {
+    background-color: #dc3545; /* Red color for delete button */
+    border-color: #dc3545;
+}

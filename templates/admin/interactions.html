@@ -13,6 +13,7 @@
         </div>
         <div class="sidebar-navigation">
             <a href="admin_dashboard">Dashboard Overview</a>
+            <a href="user_management">User Management</a>
             <a href="">Interaction Management</a>
             <a href="overall_sentiment_score">Sentiment Analysis</a>
             <a href="#">Recommendation Engine</a>
@@ -43,7 +44,7 @@
                 <div class="row">
                     {% for chat, form in chats_and_forms %}
                         <div class="col-md-6 col-lg-4 mb-4">
-                            <div class="card">
+                            <div class="card h-100">
                                 <div class="card-body">
                                     <h6 class="card-subtitle mb-2 text-muted"> 
                                         <p>User:{{ chat.user.username }}</p>

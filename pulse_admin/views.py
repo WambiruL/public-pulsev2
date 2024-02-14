@@ -26,7 +26,8 @@ from django.contrib import messages
 import joblib
 
 from chatbot.forms import ChatFilterForm
-
+from chatbot.models import UserProfile
+from django.contrib.auth.models import User
 # Create your views here.
 # def view_sentiments(request):
 #     messages=Chat.objects.all()
@@ -328,6 +329,26 @@ def sentiment_analysis(request):
         'form':form
     }
     return render(request, 'admin/overallsentiments.html', context)
+
+def user_management(request):
+    profiles=UserProfile.objects.all()
+    return render(request, 'admin/user_management.html', {'profiles':profiles})
+
+def user_detail(request, user_id):
+    profile=get_object_or_404(UserProfile, user__id=user_id)
+    chats=Chat.objects.filter(user_id=user_id).order_by('-created_at')
+    #delete users
+    if request.method=='POST':
+        user=get_object_or_404(User, pk=user_id)
+        user.delete()
+        messages.success(request, "User deleted Successfully")
+        return redirect('user_management')
+    else:
+        messages.error(request, "Invalid request")
+        
+    
+    return render(request, 'admin/user_detail.html', {'profile':profile, 'chats':chats})
+
 
 #load model and vectorizer
 # model=joblib.load('sentiment_model.pkl')

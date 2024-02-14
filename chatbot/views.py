@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import auth
 from django.contrib.auth.models import User
 
-from .models import Chat
+from .models import Chat, UserProfile
 from django.utils import timezone
 from django.http import JsonResponse
 import openai
@@ -243,14 +243,17 @@ def categorize_and_analyze_sentiment(messages):
 
 
 def user_profile(request):
-    form=UserProfileForm()
+    try:
+        profile=request.user.userprofile
+    except UserProfile.DoesNotExist:
+        profile=UserProfile.objects.create(user=request.user)
     if request.method=='POST':
-        form=UserProfileForm(request.POST)
+        form=UserProfileForm(request.POST, instace=profile)
         if form.is_valid():
             form.save()
             messages.success(request, "Your information has been saved")
         else:
-            form=UserProfileForm()
+            form=UserProfileForm(instance=profile)
     return render(request, 'user/user_profile.html', {'form': form})
 
 def chat_history(request):
