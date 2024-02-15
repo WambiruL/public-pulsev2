@@ -29,7 +29,7 @@ from django.utils.timezone import localtime
 import joblib
 
 
-openai_api_key='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'
+openai_api_key='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'
 openai.api_key=openai_api_key
 #     if not openai.api_key:
 #     raise ValueError("No OpenAI API key found")
@@ -64,9 +64,7 @@ def chatbot(request):
 
 
         chat=Chat(user=request.user, message=message, response=response, created_at=timezone.now(), category=category, sentiment_score=sentiment)
-        for chat in Chat.objects.all():
-            chat.classification = sentiment_status(chat.sentiment_score)
-            chat.save()
+        chat.save()
         return JsonResponse({'message':message, 'response':response})
     return render(request, 'chatbot.html', {'chats':chats})
 

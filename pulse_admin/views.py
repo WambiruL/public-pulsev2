@@ -25,6 +25,8 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
 import joblib
 
+from collections import defaultdict
+
 from chatbot.forms import ChatFilterForm
 from chatbot.models import UserProfile
 from django.contrib.auth.models import User
@@ -51,15 +53,44 @@ def admin_dashboard(request):
     # Convert avg_response_time to a total number of seconds, if it's not None
     avg_response_time_seconds = avg_response_time.total_seconds() if avg_response_time else 0
 
-    # avg_rating = Feedback.objects.aggregate(models.Avg('rating'))['rating__avg'] or 0
+    #total number of users
+    total_users=User.objects.exclude(is_staff=True).exclude(is_superuser=True).count()
+
+    #complaints trends
+    today = timezone.now()
+    last_week = today - timedelta(days=7)
+    last_month = today - timedelta(days=30)
+
+    # Query for complaints in the last month
+    recent_complaints = Chat.objects.filter(created_at__gte=last_month)
+
+    # Initialize a default dictionary to store counts
+    daily_counts = defaultdict(int)
+    for complaint in recent_complaints:
+        complaint_date = complaint.created_at.date()
+        daily_counts[complaint_date] += 1
+
+    # Prepare data for the last week
+    trend_data = [{'date': (last_week.date() + timedelta(days=i)).strftime('%Y-%m-%d'), 'count': daily_counts[last_week.date() + timedelta(days=i)]} for i in range(7)]
     
+    #categories count
+    complaints=Chat.objects.all()
+
+    category_counts=Counter(complaint.category for complaint in complaints)
+
+    labels=[category for category, count in category_counts.items()]
+    counts=[count for category, count in category_counts.items()]
+
     context = {
         'total_complaints': total_complaints,
         'new_complaints': new_complaints,
         'resolved_complaints': resolved_complaints,
         'pending_complaints': pending_complaints,
-        'avg_response_time_seconds': avg_response_time_seconds
-        # 'avg_rating': avg_rating,
+        'avg_response_time_seconds': avg_response_time_seconds,
+        'total_users':total_users,
+        'trend_data':json.dumps(trend_data),
+        'labels':json.dumps(labels),
+        'counts':json.dumps(counts),
     }
 
 

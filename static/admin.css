@@ -43,7 +43,7 @@ a:hover {
 
 
 .admin-side {
-    width: 500px;
+    width: 300px;
     background-color: #041416;
     color: white;
     height: 100vh;
@@ -119,11 +119,11 @@ a:hover {
     /* box-shadow: 0 2px 4px rgba(0,0,0,0.1); */
     margin-top: 40px;
 }
+
 .category_sentiments{
     margin-top: 60px;
     margin-bottom: 40px;
 }
-
 .keywords{
     margin-top: 30px;
     display: flex;
@@ -272,4 +272,92 @@ td{
 .btn-danger {
     background-color: #dc3545; /* Red color for delete button */
     border-color: #dc3545;
+}
+
+/* admin dashboard */
+.dashboard_overview {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.dashboard_overview h3 {
+    color: #444;
+    font-size: 15px;
+}
+.dashboard_overview h2{
+    font-size: 20px;
+    color: #444;
+    margin-bottom: 20px;
+}
+
+.dashboard_overview .trends, .categories {
+    background-color: whitesmoke;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    width: 500px;
+    height: 500px;
+}
+.dashboard_overview .users-complaints{
+    display: flex;
+    justify-content: center;
+}
+.dashboard_overview .users{
+    font-size: 50px;
+    background-color: #041416;
+    color: white;
+    text-align: center;
+    padding: 100px;
+    border-radius: 10px;
+}
+.dashboard_overview div, .trends, .categories {
+    margin-top: 15px;
+}
+
+.dashboard_overview canvas {
+    max-width: 100%;
+    height: auto;
+}
+.dashboard_overview .graphs{
+    display: flex;
+    justify-content: center;
+}
+/* Flexbox for sections */
+.dashboard_overview > div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.dashboard_overview > div > div {
+    flex: 1;
+    min-width: 200px; /* minimum width for each block */
+}
+.dashboard_overview p{
+    font-family: 'Tiro Telugu';
+}
+.dashboard_overview .complaints p{
+    background-color: #24CFED;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+/* Responsive Design */
+@media (max-width: 768px) {
+    .dashboard_overview > div {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    .dashboard_overview {
+        padding: 10px;
+    }
+
+    .dashboard_overview > div > div {
+        min-width: 100%;
+    }
 }
