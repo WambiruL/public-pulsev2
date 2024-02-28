@@ -29,7 +29,7 @@ from django.utils.timezone import localtime
 import joblib
 
 
-openai_api_key='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'
+openai_api_key='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'
 openai.api_key=openai_api_key
 #     if not openai.api_key:
 #     raise ValueError("No OpenAI API key found")
@@ -118,70 +118,6 @@ def sentiment_status(request):
     for message in messages:
         print(message.message, message.sentiment_status())
 
-# def overall_sentiment_score(request):
-#     total_score=0
-#     count=0
-#     messages=Chat.objects.exclude(sentiment_score=None)
-
-#     for message in messages:
-#         total_score+=message.sentiment_score
-#         count +=1
-
-#     if count >0:
-#         average_score=round(total_score/count,2)
-#         if average_score > 0.1:
-#             overall_sentiment= 'Positive'
-#         elif average_score < -0.1:
-#             overall_sentiment ='Negative'
-#         else:
-#             overall_sentiment='Neutral'
-#     else:
-#         overall_sentiment='No data'
-#         average_score=None
-
-
-#     context={
-#         'overall_sentiment':overall_sentiment,
-#         'average_score':average_score if count > 0 else None,
-#     }    
-#     return render(request, 'overallsentiments.html', context)
-
-# def sentiment_over_time(request):
-#     end_date=datetime.now()
-#     start_date=end_date-timedelta(days=7)
-
-#     data=(Chat.objects.filter(created_at__range=(start_date, end_date))
-#           .annotate(date=TruncDay('created_at'))
-#           .values('date')
-#           .annotate(average_score=Avg('sentiment_score'))
-#           .order_by('date'))
-    
-#     if not data:
-#        dates = [(start_date + timedelta(days=i)).strftime('%Y-%m-%d') for i in range(8)]
-#        scores = [0 for _ in range(8)]
-    
-#     else:
-#         dates = [item['date'].strftime('%Y-%m-%d') for item in data]
-#         scores = [item['average_score'] for item in data]
-
-#     context={
-#         'dates':json.dumps(dates),
-#         'scores':json.dumps(scores),
-#     }
-#     print(dates)
-#     print(scores)
-#     return render(request, 'overallsentiments.html', context)
-
-# def sentiment_distribution(request):
-#     sentiments=Chat.objects.aggregate(
-#         positive=Count(Case(When(sentiment_score__gt=0.1, then=1), output_field=FloatField())),
-#         negative=Count(Case(When(sentiment_score__lt=-0.1, then=1), output_field=FloatField())),
-#         neutral=Count(Case(When(sentiment_score__lte=0.1, sentiment_score__gte=-0.1, then=1), output_field=FloatField())),
-#     )
-#     context={
-#         'sentiments':sentiments,
-#     }
-#     return render(request, 'overallsentiments.html', context)
 def analyze_keywords(messages):
     positive_keywords=[]
     negative_keywords=[]
@@ -220,6 +156,7 @@ def matching_keywords(messages):
     lemmas=[token.lemma_ for token in doc if not token.is_stop and token.is_alpha]
     
     return filtered_tokens, lemmas
+
 def categorize_keywords(messages):
     categories={
         'Transport':['roads', 'road', 'potholes','pothole', 'accidents', 'accident'],
@@ -227,7 +164,7 @@ def categorize_keywords(messages):
         'Education':['schools', 'school', 'teacher','teachers', 'student', 'students', 'bursary', 'bursaries'],
     }
 
-    for category, keywords in categories.items(matching_keywords):
+    for category, keywords in categories.items():
         if any(keyword in messages.lower() for keyword in keywords):
             return category
     return 'general'
@@ -243,11 +180,11 @@ def categorize_and_analyze_sentiment(messages):
 def user_profile(request):
     form=UserProfileForm()
     try:
-        profile=request.user.username
+        profile=UserProfile.objects.get(user=request.user)
     except UserProfile.DoesNotExist:
         profile=UserProfile.objects.create(user=request.user)
     if request.method=='POST':
-        form=UserProfileForm(request.POST, instace=profile)
+        form=UserProfileForm(request.POST, instance=profile)
         if form.is_valid():
             form.save()
             messages.success(request, "Your information has been saved")

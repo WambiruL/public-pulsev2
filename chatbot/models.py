@@ -42,7 +42,7 @@ class Chat(models.Model):
 #         return f'{self.chat.user.username} at {self.created_at}:{self.score}'
     
 class UserProfile(models.Model):
-    user=models.ForeignKey(User, on_delete=models.CASCADE)
+    user=models.OneToOneField(User, on_delete=models.CASCADE)
     first_name=models.CharField(max_length=100)
     last_name=models.CharField(max_length=100)
     email=models.EmailField(max_length=100)

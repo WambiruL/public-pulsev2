@@ -265,9 +265,11 @@ def categorize_keywords(messages):
         'Health':['hospital', 'hospitals', 'doctors', 'nurses'],
         'Education':['schools', 'school', 'teacher','teachers', 'student', 'students', 'bursary', 'bursaries'],
     }
+    
+    filtered_tokens, lemmas=matching_keywords(messages)
 
-    for category, keywords in categories.items(matching_keywords):
-        if any(keyword in messages.lower() for keyword in keywords):
+    for category, keywords in categories.items():
+        if any(keyword in filtered_tokens or keyword in lemmas for keyword in keywords):
             return category
     return 'general'
 
@@ -384,6 +386,8 @@ def logout(request):
     auth.logout(request)
     return redirect('/')
 
+def generate_recommendations(request):
+    return render(request, 'admin/recommendations.html')
 #load model and vectorizer
 # model=joblib.load('sentiment_model.pkl')
 # vectorizer=joblib.load('tfidf_vectorizer.pkl')
