@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib import auth
 import json
+
+import openai
 from chatbot.models import Chat
 from chatbot.forms import UpdateChatStatusForm
 from django.db.models import Avg
@@ -386,8 +388,50 @@ def logout(request):
     auth.logout(request)
     return redirect('/')
 
+def summarize_complaints(complaints):
+    """Summarize main issues in complaints category"""
+    words=[]
+    for complaint in complaints:
+        tokens=word_tokenize(complaint.message.lower())
+        clean_tokens=[token for token in tokens if token.isalpha()]
+        words.extend(clean_tokens)
+    common_issues=Counter(words).most_common(1000)
+    summary=', '.join([issue[0] for issue in common_issues])
+    return summary    
+
+openai.api_key='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'
+def generate_openai_recommendation(category, summary):
+    try:
+        response=openai.chat.completions.create(
+            model='gpt-3.5-turbo',
+            messages=[
+                {'role':"system", 'content':f"Given the common issues in the {category} category, which are {summary}, provide comprehensive recommendations. Talk as if talking to the government required to make the recommendations. Don't include the citizens who complained. Just be a recommendation system. Write also in point form but not in the format of a letter"},
+                {'role':"user", 'content':summary},
+            ]       
+        )
+        recommendations=response.choices[0].message.content.strip().split('\n')
+        recommendations=[rec.strip() for rec in recommendations if rec.strip()]
+        return recommendations
+    
+    except Exception as e:
+        print(f"Error generation recommendation for {category}:{e}")
+        return "No recommendation available due to an error."
+
 def generate_recommendations(request):
-    return render(request, 'admin/recommendations.html')
+    category_counts=Chat.objects.values('category').annotate(total=Count('id')).order_by('-total')
+
+    most_complained_category=category_counts[0]['category']
+    complaints=Chat.objects.filter(category=most_complained_category)
+    summary=summarize_complaints(complaints)
+    recommendation=generate_openai_recommendation(most_complained_category,summary)
+    category_recommendations={most_complained_category:recommendation}
+        
+    context = {
+        'summary':summary,
+        'category_recommendations': category_recommendations
+    }
+    return render(request, 'admin/recommendations.html', context)
+
 #load model and vectorizer
 # model=joblib.load('sentiment_model.pkl')
 # vectorizer=joblib.load('tfidf_vectorizer.pkl')

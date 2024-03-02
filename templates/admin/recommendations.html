@@ -27,6 +27,28 @@
     </div>
     <div class="main">
         <div class="content">
+            <div class="recommendations">
+                {% if category_recommendations %}
+                    <p>Service Improvement Recommendations for Most Complained about Category</p>
+                    <div class="cards">
+                        {% for category, recommendations in category_recommendations.items %}
+                            <div class="card">
+                                <h3>{{ category }}</h3>
+                                <div class="card-content">
+                                    <h4>Recommendations:</h4>
+                                    <ul>
+                                        {% for point in recommendations %}
+                                            <li>{{ point }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p>No recommendations available at the time.</p>
+                {% endif %}
+            </div>                                    
         </div>
     </div>
 </div>

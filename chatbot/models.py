@@ -8,9 +8,23 @@ class Chat(models.Model):
         ('resolved', 'Resolved'),
         ('pending', 'Pending'),
     )
+    CATEGORY_CHOICES=[
+        ('Transport', 'Transport'),
+        ('Education', 'Education'),
+        ('Security', 'Security'),
+        ('Public Service', 'Public Service'),
+        ('Sanitation', 'Sanitation'),
+        ('Environment', 'Environment'),
+        ('Health', 'Health'),
+        ('Services', 'Services'),
+        ('Housing', 'Housing'),
+        ('Infractructure', 'Infractructure'),
+        ('Jobs', 'Jobs'),
+        ('Sports', 'Sports')
+    ]
     user=models.ForeignKey(User, on_delete=models.CASCADE)
     message=models.TextField()
-    category=models.CharField(max_length=100, default='general')
+    category=models.CharField(max_length=100, choices=CATEGORY_CHOICES)
     response=models.TextField(default="I am sorry. I dont understand your question") 
     created_at=models.DateTimeField(auto_now_add=True)
     status=models.CharField(max_length=10, choices=STATUS_CHOICES, null=True, blank=True )

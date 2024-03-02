@@ -29,7 +29,7 @@ from django.utils.timezone import localtime
 import joblib
 
 
-openai_api_key='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'
+openai_api_key='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'
 openai.api_key=openai_api_key
 #     if not openai.api_key:
 #     raise ValueError("No OpenAI API key found")

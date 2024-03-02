@@ -360,3 +360,73 @@ td{
         min-width: 100%;
     }
 }
+
+/* Recommendation system */
+.recommendations {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+.recommendations p{
+    font-size: 17px;
+    text-align: center;
+    background-color: #041416;
+    padding: 20px;
+    color: white;
+}
+.recommendations.cards {
+    gap: 20px;
+    justify-content: center;
+}
+
+.recommendations .card {
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    width: 100%;
+    margin: 10px;
+    overflow: hidden;
+}
+
+.recommendations .card h3 {
+    background-color: #24CFED;
+    color: #fff;
+    padding: 15px 20px;
+    margin: 0;
+    font-size: 1.25em;
+}
+
+.recommendations .card-content {
+    padding: 20px;
+}
+
+.recommendations .card-content h4 {
+    margin-top: 0;
+    font-size: 16px;
+}
+
+.recommendations ul {
+    padding: 0;
+    list-style: none;
+}
+
+.recommendations ul li {
+    padding: 5px 0;
+    border-bottom: 1px solid #eee;
+    font-family: 'Tiro Telugu';
+    font-size: 14px;
+}
+
+.recommendations ul li:last-child {
+    border-bottom: none;
+}
+
+@media (max-width: 768px) {
+    .recommendations .cards {
+        flex-direction: column;
+    }
+
+    .recommendations .card {
+        width: 100%;
+    }
+}
