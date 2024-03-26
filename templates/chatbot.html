@@ -81,22 +81,17 @@
 {% block content %}
 {% load static %}
 
-<div class="chatbot">
-    <div class="admin-side sidebar">
+<div class="chatbot container">
+    <!-- <div class="admin-side sidebar container">
         <div class="logo container">
                 <img src="{% static 'Images/publicpulselogo.png' %}" alt="Public Pulse Logo">
                 <a href="/">
                     <h4>Public<span>Pulse</span></h4>
                 </a>
         </div>
-    </div>
+    </div> -->
     <div class="chat-container">
         <div class="card">
-            <!-- <div class="card-header title">
-                <a href="/">
-                    <img src="{%static 'Images/publicpulselogo2.png'%}" class="logo"/>
-                </a>
-            </div> -->
             <div class="card-header welcome">
                 <div class="profile">
                     Welcome,
@@ -107,6 +102,11 @@
                     {%else%}
                     {{user.username}}
                     {%endif%}
+                </div>
+                <div class="title">
+                    <a href="/">
+                        <img src="{%static 'Images/publicpulselogo2.png'%}" class="logo"/>
+                    </a>
                 </div>
                 <a href="logout" class="logout-link">Logout <i class="fa fa-sign-out" aria-hidden="true"></i></a>
             </div>

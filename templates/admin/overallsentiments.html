@@ -29,17 +29,21 @@
         <div class="content">
             <div class="sentiment-analysis">
                 <div class="container-fluid sentiment-results">
-                    <h1>Sentiment Analysis Results</h1>
+                    <h1 class="sentiment-title">Sentiment Analysis Results</h1>
                     <div class="sentiment-summary">
-                        <h2>Overall Sentiment: {{ overall_sentiment }}</h2>
-                        <p>Average score: {{ average_score }}</p>
+                        <h2 class="overall-sentiment">Overall Sentiment: <span>{{ overall_sentiment }}</span></h2>
+                        <!-- <p class="average-score">Average score: <span>{{ average_score }}</span></p> -->
                     </div>
                 </div>
-                <div class="chart-container line-chart">    
-                    <canvas id="sentimentChart"></canvas>
-                </div>
-                <div class="chart-container pie-chart">
-                    <canvas id="sentimentPie"></canvas>
+                
+                <div class="chart-and-pie">
+                    <div class="chart-container line-chart">    
+                        <canvas id="sentimentChart" width="400" height="400"></canvas>
+                    </div>
+                    <div class="chart-container pie-chart">
+                        <canvas id="sentimentPie" width="400" height="400"></canvas>
+                    </div>
+
                 </div>
             </div>
         
@@ -81,7 +85,7 @@
                     </div>               
                 </div>
             </div>
-            <div class="container mt-5">
+            <div class="container mt-5 table">
                 <div class="filter-form">
                     <form method="get">
                         {{ form.as_p }}

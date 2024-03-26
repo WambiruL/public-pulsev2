@@ -29,31 +29,20 @@ from django.utils.timezone import localtime
 import joblib
 
 
-openai_api_key='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'
+openai_api_key='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'
 openai.api_key=openai_api_key
-#     if not openai.api_key:
-#     raise ValueError("No OpenAI API key found")
-# openai.api_key=openai_api_key
 
-# Create your views here.
 def ask_openai(message):
-    # try:
-        response=openai.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                {'role':"system", 'content':"You are a helpful government assistant"},
-                {'role':"user", 'content':message},
-            ]
-        )
-        print(response)
-        answer=response.choices[0].message.content.strip()
-        return answer
-    # except Exception as e:
-    #     print(f"An unexpected error occurred: {e}")
-    #     return None
-
-# @login_required
-# @csrf_exempt
+    response=openai.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {'role':"system", 'content':"You are a helpful government assistant"},
+            {'role':"user", 'content':message},
+        ]
+    )
+    print(response)
+    answer=response.choices[0].message.content.strip()
+    return answer
 def chatbot(request):
     chats=Chat.objects.filter(user=request.user.id)
 
@@ -81,7 +70,6 @@ def login(request):
             return render(request, 'login.html',{'error_message':error_message})
     else:
         return render(request, 'login.html')
-
 def register(request):
     if request.method=='POST':
         username=request.POST['username']
@@ -101,10 +89,7 @@ def register(request):
         else:
             error_message='Passwords dont match'
             return render(request, 'register.html', {'error_message':error_message})
-    return render(request, 'register.html')
-
-
-    
+    return render(request, 'register.html')    
 def logout(request):
     auth.logout(request)
     return redirect('/')
@@ -117,13 +102,10 @@ def sentiment_status(request):
     messages=Chat.objects.all()
     for message in messages:
         print(message.message, message.sentiment_status())
-
 def analyze_keywords(messages):
     positive_keywords=[]
     negative_keywords=[]
-
     stop_words=set(stopwords.words('english'))
-
     messages=Chat.objects.all()
 
     for message in messages:
@@ -134,15 +116,11 @@ def analyze_keywords(messages):
             positive_keywords.extend(keywords)
         elif analysis.sentiment.polarity<0:
             negative_keywords.extend(keywords)
-
     positive_freq= Counter(positive_keywords)
     negative_freq=Counter(negative_keywords)
-
     top_positive=positive_freq.most_common(10)
     top_negative=negative_freq.most_common(10)
-
     return top_positive, top_negative
-
 def matching_keywords(messages):
     #stemming
     stemmer=PorterStemmer()
@@ -154,7 +132,7 @@ def matching_keywords(messages):
     nlp=spacy.load("en_core_web_sm")
     doc=nlp(messages.lower())
     lemmas=[token.lemma_ for token in doc if not token.is_stop and token.is_alpha]
-    
+
     return filtered_tokens, lemmas
 
 def categorize_keywords(messages):
@@ -163,12 +141,10 @@ def categorize_keywords(messages):
         'Health':['hospital', 'hospitals', 'doctors', 'nurses'],
         'Education':['schools', 'school', 'teacher','teachers', 'student', 'students', 'bursary', 'bursaries'],
     }
-
     for category, keywords in categories.items():
         if any(keyword in messages.lower() for keyword in keywords):
             return category
     return 'general'
-
 def categorize_and_analyze_sentiment(messages):
     category=categorize_keywords(messages)
     sentiment=TextBlob(messages).sentiment.polarity

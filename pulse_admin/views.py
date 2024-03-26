@@ -32,6 +32,12 @@ from collections import defaultdict
 from chatbot.forms import ChatFilterForm
 from chatbot.models import UserProfile
 from django.contrib.auth.models import User
+
+# from django.http import HttpResponse
+# from django.template.loader import render_to_string
+# from weasyprint import HTML
+# import tempfile
+
 # Create your views here.
 # def view_sentiments(request):
 #     messages=Chat.objects.all()
@@ -291,17 +297,15 @@ def sentiment_analysis(request):
                  .values('date')
                  .annotate(average_score=Avg('sentiment_score'))
                  .order_by('date'))
-
+    
     dates = [item['date'].strftime('%Y-%m-%d') for item in time_data] if time_data else []
     scores = [item['average_score'] for item in time_data] if time_data else []
-
     # Sentiment distribution
     sentiments = Chat.objects.aggregate(
         positive=Count(Case(When(sentiment_score__gt=0.1, then=1), output_field=FloatField())),
         negative=Count(Case(When(sentiment_score__lt=-0.1, then=1), output_field=FloatField())),
         neutral=Count(Case(When(sentiment_score__lte=0.1, sentiment_score__gte=-0.1, then=1), output_field=FloatField())),
     )
-
     # Overall sentiment score
     total_score = 0
     count = 0
@@ -309,7 +313,6 @@ def sentiment_analysis(request):
     for message in messages:
         total_score += message.sentiment_score
         count += 1
-
     if count > 0:
         average_score = round(total_score / count, 2)
         if average_score > 0.1:
@@ -321,21 +324,17 @@ def sentiment_analysis(request):
     else:
         overall_sentiment = 'No data'
         average_score = None
-
     #Analyze keywords
     messages=Chat.objects.all()
     top_positive, top_negative=analyze_keywords(messages)
     
     #sentiments by category
     category_sentiments=Chat.objects.values('category').annotate(average_sentiment=Avg('sentiment_score')).order_by('category')
-    
     #list of users and their chats
     chats=Chat.objects.all().order_by('-created_at') #newest chats first
-
     #filter by user, category and time    
     form=DashboardFilterForm(request.GET)
     chats_category=Chat.objects.all()
-
     if form.is_valid():
         start_date=form.cleaned_data.get('start_date')
         end_date=form.cleaned_data.get('end_date')
@@ -399,7 +398,7 @@ def summarize_complaints(complaints):
     summary=', '.join([issue[0] for issue in common_issues])
     return summary    
 
-openai.api_key='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'
+openai.api_key='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'
 def generate_openai_recommendation(category, summary):
     try:
         response=openai.chat.completions.create(
@@ -432,16 +431,11 @@ def generate_recommendations(request):
     }
     return render(request, 'admin/recommendations.html', context)
 
-#load model and vectorizer
-# model=joblib.load('sentiment_model.pkl')
-# vectorizer=joblib.load('tfidf_vectorizer.pkl')
-
-# def classify_message(request):
-#     message=request.GET.get('message', '')
-#     vectorized_message=vectorizer.transform([message])
-#     prediction=model.predict(vectorized_message)
-#     sentiment="Positive" if prediction[0] else "Negative"
-
-#     return JsonResponse({'message':message, 'sentiment':sentiment})
-
-
+#pdf report generation
+# def generate_pdf_report(request):
+#     context= sentiment_analysis(request)
+#     html_string=render_to_string('admin/pdf_report.html', context)
+#     response=HttpResponse(content_type='application/pdf')
+#     response['Content-Disposition']='attachment; filename="PublicPulse.pdf"'
+#     HTML(string=html_string).write_pdf(response, stylesheets=["static/admin.css"])
+#     return response

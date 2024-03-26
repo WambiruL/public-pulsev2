@@ -120,6 +120,76 @@ a:hover {
     margin-top: 40px;
 }
 
+/* Sentiment Results Styling */
+.container-fluid {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    background-color: #f8f9fa;
+}
+
+.sentiment-title {
+    color: #333;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 25px;
+}
+
+.sentiment-summary {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    text-align: center;
+}
+
+.overall-sentiment {
+    color: #03697a; 
+    font-family: 'Tiro telugu';
+    margin: 10px 0;
+}
+
+.overall-sentiment span {
+    font-weight: bold;
+}
+
+.average-score {
+    color: #333;
+    font-size: 16px;
+}
+
+.average-score span {
+    font-weight: bold;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .container-fluid {
+        padding: 10px;
+    }
+
+    .sentiment-summary {
+        padding: 15px;
+    }
+
+    .overall-sentiment, .average-score {
+        font-size: 14px;
+    }
+}
+   
+.chart-and-pie{
+    display: flex;
+    justify-content: space-between;
+    align-self: center;
+    margin-top: 20px;
+}
+.pie-chart{
+    width: 500px !important;
+    height: 500px !important;
+}
+
 .category_sentiments{
     margin-top: 60px;
     margin-bottom: 40px;
