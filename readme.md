@@ -1,3 +1,5 @@
+![Screenshot (209)](https://github.com/WambiruL/public-pulsev2/assets/69303622/7082cdb8-4ad0-48b7-af8c-fada21b3c5c7)
+
 # Public Pulse- An AI-Powered Citizen Feedback and Complaint System
 
 ## About
